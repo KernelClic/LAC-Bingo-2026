@@ -1,0 +1,15 @@
+# --- Build / IDE (nunca al repo) ---
+build/
+dist/
+*.class
+nbproject/private/
+# jars solo dentro de carpetas de build/dist; los de lib/ SI se versionan
+build/**/*.jar
+dist/**/*.jar
+# artefactos pesados / binarios volcados
+*.tar.bz2
+*.tar.gz
+Tablas.dat
+# SO
+.DS_Store
+Thumbs.db
