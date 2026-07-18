@@ -1,0 +1,175 @@
+# Pleno | Apagón
+XXXXX
+XXXXX
+XXXXX
+XXXXX
+XXXXX
+-----
+# Cruz Pequeña
+00000
+00X00
+0X0X0
+00X00
+00000
+-----
+# Cruz Grande
+00X00
+00000
+X000X
+00000
+00X00
+-----
+# Cuatro Esquinas
+X000X
+00000
+00000
+00000
+X000X
+-----
+# Diagonal Izquierda
+0000X
+000X0
+00000
+0X000
+X0000
+-----
+# Diagonal Derecha
+X0000
+0X000
+00000
+000X0
+0000X
+-----
+# Punta de Flecha
+000XX
+0000X
+00000
+00000
+00000
+-----
+# Vertical Central
+00X00
+00X00
+00000
+00X00
+00X00
+-----
+# Horizontal Central
+00000
+00000
+XX0XX
+00000
+00000
+-----
+# Letra T
+XXXXX
+00X00
+00000
+00X00
+00X00
+-----
+# Letra L
+X0000
+X0000
+X0000
+X0000
+XXXXX
+-----
+# Letra L Invertida
+0000X
+0000X
+0000X
+0000X
+XXXXX
+-----
+# Letra X
+X000X
+0X0X0
+00000
+0X0X0
+X000X
+-----
+# Letra O
+XXXXX
+X000X
+X000X
+X000X
+XXXXX
+-----
+# Letra U Grande
+X000X
+X000X
+X000X
+X000X
+XXXXX
+-----
+# Letra U Pequeña
+X000X
+XX0XX
+XX0XX
+XXXXX
+XXXXX
+-----
+# Letra N
+X000X
+XX00X
+X000X
+X00XX
+X000X
+-----
+# Letra C
+XXXXX
+X0000
+X0000
+X0000
+XXXXX
+-----
+# Letra H
+X000X
+X000X
+XX0XX
+X000X
+X000X
+-----
+# Letra I
+XXXXX
+00X00
+00000
+00X00
+XXXXX
+-----
+# Letra Z
+XXXXX
+000X0
+00000
+0X000
+XXXXX
+-----
+# Letra S
+XXXXX
+X0000
+XX0XX
+0000X
+XXXXX
+-----
+# Letra E
+XXXXX
+X0000
+XX000
+X0000
+XXXXX
+-----
+# Letra Casita
+00X00
+0X0X0
+X000X
+00000
+00000
+-----
+# Letra Cuadrado
+00000
+0XXX0
+0X0X0
+0XXX0
+00000
+-----
