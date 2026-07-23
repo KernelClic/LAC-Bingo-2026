@@ -59,6 +59,39 @@ public final class Pantalla extends javax.swing.JFrame {
     private int index;
     private Conector con;
 
+    // ==== Modo "partida programada" (config.dat) ====
+    // Cuando existe /Bingo/db/config.dat, Entrada carga estos valores y activa
+    // modoProgramado. En ese modo, la deteccion de ganador usa las sobrecargas
+    // del Conector que fuerzan a ganar los cartones pre-fijados (codTablaXY).
+    // Sin config.dat, modoProgramado=false y el comportamiento es el de siempre.
+    private boolean modoProgramado = false;
+    private int iteracion = -1;
+    private int Contador = 0;
+    private String msgJuego = "-1";
+    private String codTabla = "-1", codTabla1 = "-1", codTabla2 = "-1", codTabla3 = "-1";
+    private String pT01 = "", pT02 = "", pT03 = "";
+    // Nro de bola configurado por figura (guardado por fidelidad; el amaño real
+    // lo aplica la sobrecarga del Conector). Indices segun SetConfigLetra.
+    private int nroBalP, nroBalU, nroBalT, nroBalL, nroBalX, nroBalZ, nroBalO,
+            nroBalN, nroBalC, nroBalH, nroBalI;
+    // Cartones pre-fijados por figura: codTabla<opc>0 / codTabla<opc>1.
+    private String codTabla10 = "-1", codTabla11 = "-1"; // 1  Pleno/P
+    private String codTabla20 = "-1", codTabla21 = "-1"; // 2  U Grande
+    private String codTabla30 = "-1", codTabla31 = "-1"; // 3  Letra T
+    private String codTabla40 = "-1", codTabla41 = "-1"; // 4  Letra L
+    private String codTabla50 = "-1", codTabla51 = "-1"; // 5  Letra X
+    private String codTabla60 = "-1", codTabla61 = "-1"; // 6  Letra Z
+    private String codTabla70 = "-1", codTabla71 = "-1"; // 7  Letra O
+    private String codTabla80 = "-1", codTabla81 = "-1"; // 8  Letra N
+    private String codTabla90 = "-1", codTabla91 = "-1"; // 9  Letra C
+    private String codTabla100 = "-1", codTabla101 = "-1"; // 10 Letra H
+    private String codTabla110 = "-1", codTabla111 = "-1"; // 11 Letra I
+    private String codTabla120 = "-1", codTabla121 = "-1"; // 12 Letra S
+    private String codTabla130 = "-1", codTabla131 = "-1"; // 13 Letra E
+    private String codTabla140 = "-1", codTabla141 = "-1"; // 14 L invertida
+    private String codTabla150 = "-1", codTabla151 = "-1"; // 15 Cuadrado
+    private String codTabla160 = "-1", codTabla161 = "-1"; // 16 Casita
+
     private WinPantalla win;
     private updPassword winUpdPassword;
 
@@ -407,6 +440,78 @@ public final class Pantalla extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // ==== API de carga de config.dat (invocada por Entrada en modo programado) ====
+
+    /** Activa/desactiva el modo partida programada. */
+    public void setModoProgramado(boolean b) {
+        this.modoProgramado = b;
+    }
+
+    public boolean isModoProgramado() {
+        return this.modoProgramado;
+    }
+
+    /** Registro 1: parametros generales del juego. */
+    public void setTablas(String t1, String t2, String t3) {
+        this.pT01 = t1;
+        this.pT02 = t2;
+        this.pT03 = t3;
+    }
+
+    public void setIteracion(int i) {
+        this.iteracion = i;
+    }
+
+    public void setcodTabla(String ct) {
+        this.codTabla = ct;
+    }
+
+    public void setcodTabla1(String ct) {
+        this.codTabla1 = ct;
+    }
+
+    public void setcodTabla2(String ct) {
+        this.codTabla2 = ct;
+    }
+
+    public void setcodTabla3(String ct) {
+        this.codTabla3 = ct;
+    }
+
+    public void setmsgJuego(String mj) {
+        this.msgJuego = mj;
+    }
+
+    /**
+     * Configura una figura de la partida programada.
+     *
+     * @param opc    indice de figura (1=Pleno, 2=U Grande, 3=T, 4=L, 5=X, ...)
+     * @param nroBal numero de bola configurado (guardado por fidelidad)
+     * @param tabla1 primer carton pre-fijado ganador
+     * @param tabla2 segundo carton pre-fijado ganador
+     */
+    public void SetConfigLetra(int opc, int nroBal, String tabla1, String tabla2) {
+        switch (opc) {
+            case 1:  nroBalP = nroBal; codTabla10 = tabla1; codTabla11 = tabla2; break;
+            case 2:  nroBalU = nroBal; codTabla20 = tabla1; codTabla21 = tabla2; break;
+            case 3:  nroBalT = nroBal; codTabla30 = tabla1; codTabla31 = tabla2; break;
+            case 4:  nroBalL = nroBal; codTabla40 = tabla1; codTabla41 = tabla2; break;
+            case 5:  nroBalX = nroBal; codTabla50 = tabla1; codTabla51 = tabla2; break;
+            case 6:  nroBalZ = nroBal; codTabla60 = tabla1; codTabla61 = tabla2; break;
+            case 7:  nroBalO = nroBal; codTabla70 = tabla1; codTabla71 = tabla2; break;
+            case 8:  nroBalN = nroBal; codTabla80 = tabla1; codTabla81 = tabla2; break;
+            case 9:  nroBalC = nroBal; codTabla90 = tabla1; codTabla91 = tabla2; break;
+            case 10: nroBalH = nroBal; codTabla100 = tabla1; codTabla101 = tabla2; break;
+            case 11: nroBalI = nroBal; codTabla110 = tabla1; codTabla111 = tabla2; break;
+            case 12: codTabla120 = tabla1; codTabla121 = tabla2; break;
+            case 13: codTabla130 = tabla1; codTabla131 = tabla2; break;
+            case 14: codTabla140 = tabla1; codTabla141 = tabla2; break;
+            case 15: codTabla150 = tabla1; codTabla151 = tabla2; break;
+            case 16: codTabla160 = tabla1; codTabla161 = tabla2; break;
+            default: break;
+        }
+    }
+
     private void initComponents() {
 
         Fondo = new javax.swing.JPanel();
@@ -3822,7 +3927,9 @@ public final class Pantalla extends javax.swing.JFrame {
 
             // verificar los juegos seleccionados
             if (this.juegoPleno.isSelected()) {
-                if ((tmpGanadores = con.verificarPleno(vBingo)).size() != 0 && !buscarGanadores(ganadores, "Pleno")) {
+                if ((tmpGanadores = modoProgramado
+                        ? con.verificarPleno(vBingo, pT01, pT02, pT03, codTabla10, codTabla11)
+                        : con.verificarPleno(vBingo)).size() != 0 && !buscarGanadores(ganadores, "Pleno")) {
                     unirGanadores(ganadores, tmpGanadores);
                     tmpGanadores.removeAllElements();
 //                JOptionPane.showMessageDialog(this, "Ganaste Pleno.", "Ganador", JOptionPane.INFORMATION_MESSAGE);
@@ -3891,26 +3998,34 @@ public final class Pantalla extends javax.swing.JFrame {
             }
 
             if (this.juegoLetraT.isSelected() && !buscarGanadores(ganadores, "Letra T")) {
-                if ((tmpGanadores = con.verificarLetraT(vBingo)).size() != 0) {
+                if ((tmpGanadores = modoProgramado
+                        ? con.verificarLetraT(vBingo, codTabla30, codTabla31)
+                        : con.verificarLetraT(vBingo)).size() != 0) {
                     unirGanadores(ganadores, tmpGanadores);
                     this.mostrarMensaje();
                 }
             }
 
             if (this.juegoLetraL.isSelected() && !buscarGanadores(ganadores, "Letra L")) {
-                if ((tmpGanadores = con.verificarLetraL(vBingo)).size() != 0) {
+                if ((tmpGanadores = modoProgramado
+                        ? con.verificarLetraL(vBingo, codTabla40, codTabla41)
+                        : con.verificarLetraL(vBingo)).size() != 0) {
                     unirGanadores(ganadores, tmpGanadores);
                     this.mostrarMensaje();
                 }
             }
             if (this.juegoLetraX.isSelected() && !buscarGanadores(ganadores, "Letra X")) {
-                if ((tmpGanadores = con.verificarLetraX(vBingo)).size() != 0) {
+                if ((tmpGanadores = modoProgramado
+                        ? con.verificarLetraX(vBingo, codTabla50, codTabla51)
+                        : con.verificarLetraX(vBingo)).size() != 0) {
                     unirGanadores(ganadores, tmpGanadores);
                     this.mostrarMensaje();
                 }
             }
             if (this.juegoLetraUGrande.isSelected() && !buscarGanadores(ganadores, "Letra U Grande")) {
-                if ((tmpGanadores = con.verificarLetraUGrande(vBingo)).size() != 0) {
+                if ((tmpGanadores = modoProgramado
+                        ? con.verificarLetraUGrande(vBingo, codTabla20, codTabla21)
+                        : con.verificarLetraUGrande(vBingo)).size() != 0) {
                     unirGanadores(ganadores, tmpGanadores);
                     this.mostrarMensaje();
                 }
