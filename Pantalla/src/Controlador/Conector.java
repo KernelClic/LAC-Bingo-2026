@@ -34,6 +34,8 @@ public final class Conector {
         this.url = url;
     }
     Connection connect;
+    // Modo programado (config.dat): evita duplicar los cartones pre-fijados del Pleno.
+    public int plenoUnaVez = 0;
 
     public Conector() throws IOException {
         this.setUrl(AccesoAleatorio.getRutaFileDB() + "tablas.db");
@@ -968,6 +970,815 @@ t.setCodigo(result.getString("codigo"));
                     vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, t.getCodigo()));
                 }
             }
+        }
+        return vtablasWin;
+    }
+
+
+
+    // ==== Sobrecargas "partida programada" (config.dat): fuerzan a ganar
+    //      los cartones pre-fijados (t10/t11) cuando faltan a 1 casilla de la figura.
+    //      Portadas desde v01. Solo se invocan en modo programado. ====
+
+    public Vector<Ganador> verificarPleno(Vector buscado, String t01, String t02, String t03, String t10, String t11) throws IOException, SQLException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+        int bingo[] = new int[25];
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int f = 0; f < 25; f++) {
+                for (int c = 0; c < buscado.size(); c++) {
+                    if (buscado.elementAt(c).equals(Integer.toString(bingo[f]))) {
+                        i++;
+                    }
+                }
+            }
+
+            if (i == 25) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t.getCodigo()));
+                if (plenoUnaVez == 0) {
+                    if (!t01.isEmpty() && !t01.equalsIgnoreCase("-1") && !t01.equalsIgnoreCase("N/A")) {
+                        vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t01));
+                    }
+                    if (!t02.isEmpty() && !t02.equalsIgnoreCase("-1") && !t02.equalsIgnoreCase("N/A")) {
+                        vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t02));
+                    }
+                    if (!t03.isEmpty() && !t03.equalsIgnoreCase("-1") && !t03.equalsIgnoreCase("N/A")) {
+                        vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t03));
+                    }
+                    plenoUnaVez = 1;
+                }
+            }
+
+            if ((i == 24) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1") && !t10.equalsIgnoreCase("N/A")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1") && !t11.equalsIgnoreCase("N/A")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraT(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[5]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[10]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[15]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[11]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[13]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))) {
+                    i++;
+                }
+            }
+
+            if (i == 8) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra T", t.getCodigo()));
+            }
+
+            if ((i == 7) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra T", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra T", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraL(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[1]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[2]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[3]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[9]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[19]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))) {
+                    i++;
+                }
+            }
+
+            if (i == 9) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L", t.getCodigo()));
+            }
+
+            if ((i == 8) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraX(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[6]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[18]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[8]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[16]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[20]))) {
+                    i++;
+                }
+            }
+
+            if (i == 8) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra X", t.getCodigo()));
+            }
+            
+            
+            if ((i == 7) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra X", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra X", t11));
+            }
+
+            
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraO(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[1]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[2]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[3]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[5]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[9]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[10]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[15]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[19]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[21]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[22]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[23]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        ) {
+                    i++;
+                }
+            }
+
+            if (i == 16) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra O", t.getCodigo()));
+            }
+
+            if ((i == 15) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra O", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra O", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraN(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[1]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[2]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[3]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[6]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[18]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[21]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[22]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[23]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        ) {
+                    i++;
+                }
+            }
+
+            if (i == 12) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra N", t.getCodigo()));
+            }
+
+            if ((i == 11) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra N", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra N", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraC(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[1]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[2]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[3]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[5]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[9]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[10]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[15]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[19]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        ) {
+                    i++;
+                }
+            }
+
+            if (i == 13) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra C", t.getCodigo()));
+            }
+
+            if ((i == 12) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra C", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra C", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraH(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[1]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[2]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[3]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[7]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[17]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[21]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[22]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[23]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        ) {
+                    i++;
+                }
+            }
+
+            if (i == 12) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra H", t.getCodigo()));
+            }
+
+            if ((i == 11) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra H", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra H", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraI(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[5]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[9]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[10]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[11]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[13]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[15]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[19]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        ) {
+                    i++;
+                }
+
+            }
+
+            if (i == 12) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra I", t.getCodigo()));
+            }
+
+            if ((i == 11) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra I", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra I", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraZ(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[5]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[10]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[15]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[9]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[19]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[8]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[16]))                        
+                        ) {
+                    i++;
+                }
+            }
+
+            if (i == 12) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Z", t.getCodigo()));
+            }
+                        
+            if ((i == 11) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Z", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Z", t11));
+            }
+
+            
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraLinvertida(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                    if (buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[21]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[22]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[23]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[19]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[9]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))) {
+                i++;
+                }
+            }
+
+            if (i == 9) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L Invertida", t.getCodigo()));
+            }
+
+            if ((i == 8) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L Invertida", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L Invertida", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraS(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[15]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[10]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[5]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[1]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[2]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[7]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[17]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[22]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[23]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[19]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[9]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))) {
+                i++;
+                }
+            }
+
+            if (i == 16) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra S", t.getCodigo()));
+            }
+
+            if ((i == 15) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra S", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra S", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraE(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[20]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[15]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[10]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[5]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[1]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[2]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[7]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[3]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[19]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[9]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))) {
+                i++;
+                }
+            }
+
+            if (i == 14) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra E", t.getCodigo()));
+            }
+
+            if ((i == 13) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra E", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra E", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraCasita(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[2]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[6]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[10]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[16]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[22]))) {
+                i++;
+                }
+            }
+
+            if (i == 5) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Casita", t.getCodigo()));
+            }
+
+            if ((i == 4) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Casita", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Casita", t11));
+            }
+
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector verificarLetraCuadrado(Vector buscado, String t10, String t11) throws SQLException, IOException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+            
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[6]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[7]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[8]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[11]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[13]))                        
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[16]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[17]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[18]))){
+                        
+                i++;
+                }
+            }
+
+            if (i == 8) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Cuadrado", t.getCodigo()));
+
+            }
+                
+            if ((i == 7) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Cuadrado", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Cuadrado", t11));
+            }
+            
+            
+    
+            i = 0;
+        }
+        return vtablasWin;
+    }
+
+    public Vector<Ganador> verificarLetraUGrande(Vector buscado, String t10, String t11) throws IOException, SQLException {
+        Tabla t = new Tabla();
+        Vector<Ganador> vtablasWin = new Vector<Ganador>();
+        int i = 0, wt = 0;
+
+        int bingo[] = new int[25];
+
+        if (buscado == null) {
+            return null;
+        }
+        ResultSet result = null;
+        PreparedStatement st = connect.prepareStatement("select * from Tablas");
+        result = st.executeQuery();
+        while (result.next()) {
+            t.setNumTabla(result.getInt("numTabla"));
+            bingo = this.getVectorBingo(result);
+            t.setCodigo(result.getString("codigo"));
+
+            // Pregunta si las tablas son iguales
+            for (int c = 1; c < buscado.size(); c++) {
+                if (buscado.elementAt(c).equals(Integer.toString(bingo[0]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[1]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[2]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[3]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[4]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[9]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[14]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[19]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[24]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[23]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[22]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[21]))
+                        || buscado.elementAt(c).equals(Integer.toString(bingo[20]))) {
+                    i++;
+                }
+            }
+
+            if (i == 13) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra U Grande", t.getCodigo()));
+            }
+
+            if ((i == 12) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra U Grande", t10));
+                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra U Grande", t11));
+            }
+
+            i = 0;
         }
         return vtablasWin;
     }
