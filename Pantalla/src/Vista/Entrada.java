@@ -7,6 +7,9 @@ package Vista;
 
 import Controlador.Bingo;
 import Controlador.Licencia;
+import Controlador.AccessFile;
+import Modelo.Configuracion;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -125,6 +128,40 @@ public class Entrada extends javax.swing.JFrame {
                     System.out.println("Autenticacion Correcta");
                     this.setVisible(false);
                     wPantalla = new Pantalla();
+
+                    // Modo "partida programada": si existe /Bingo/db/config.dat,
+                    // se carga la configuracion binaria y se activa el amaño de
+                    // cartones pre-fijados. Sin el archivo, juego normal en vivo.
+                    File fCfg = new File(AccessFile.getRutaFileDB() + "config.dat");
+                    if (AccessFile.buscarFile(fCfg)) {
+                        wPantalla.setModoProgramado(true);
+                        AccessFile.leerFileTablas(fCfg);
+
+                        Configuracion conf1 = AccessFile.getConf(AccessFile.buscarRegistro(1));
+                        if (conf1 != null && conf1.getIntento() > 0) {
+                            wPantalla.setIteracion(conf1.getIntento());
+                            wPantalla.setmsgJuego(conf1.getJuego());
+                            wPantalla.setcodTabla1(conf1.getTabla1());
+                            wPantalla.setcodTabla2(conf1.getTabla2());
+                            wPantalla.setcodTabla3(conf1.getTabla3());
+                        }
+
+                        Configuracion conf2 = AccessFile.getConf(AccessFile.buscarRegistro(2));
+                        if (conf2 != null) {
+                            wPantalla.setTablas(conf2.getTabla1(), conf2.getTabla2(), conf2.getTabla3());
+                        }
+
+                        // Registros 3..18 -> SetConfigLetra(1..16)
+                        for (int r = 3; r <= 18; r++) {
+                            Configuracion c = AccessFile.getConf(AccessFile.buscarRegistro(r));
+                            if (c != null) {
+                                wPantalla.SetConfigLetra(r - 2, c.getIntento(), c.getTabla1(), c.getTabla2());
+                            }
+                        }
+
+                        AccessFile.cerrar();
+                    }
+
                     wPantalla.setLocationRelativeTo(this);
                     wPantalla.setVisible(true);
                     }
