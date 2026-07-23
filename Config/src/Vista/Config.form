@@ -35,20 +35,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
               <Component id="jTabbedPane1" min="-2" pref="702" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jTabbedPane1" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-          </Group>
+          <Component id="jTabbedPane1" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -77,139 +72,40 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtTabla04" min="-2" pref="79" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtTabla05" min="-2" pref="79" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="txtTabla06" min="-2" pref="85" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="txtIntentos" min="-2" pref="38" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="txtTabla01" min="-2" pref="79" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="txtTabla02" min="-2" pref="79" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="txtTabla03" min="-2" pref="85" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="txtMensaje" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="btnGenerar" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
-                                          <Component id="btnGenerar1" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
-                                          <Component id="btn_updPassword" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
-                                          <Component id="btn_SalirGenerador" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="btnGenerar1" min="-2" pref="160" max="-2" attributes="0"/>
+                          <Component id="btnGenerar" min="-2" pref="160" max="-2" attributes="0"/>
+                          <Component id="btn_SalirGenerador" min="-2" pref="160" max="-2" attributes="0"/>
+                          <Component id="btn_updPassword" min="-2" pref="160" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="71" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="btnGenerar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnGenerar1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="txtIntentos" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="btn_updPassword" min="-2" pref="37" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                      <Component id="btn_SalirGenerador" min="-2" pref="37" max="-2" attributes="0"/>
+                      <EmptySpace pref="445" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="txtMensaje" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnGenerar" alignment="3" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtTabla01" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="txtTabla02" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="txtTabla03" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="jLabel7" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="btnGenerar1" alignment="3" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtTabla04" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                                  <Component id="txtTabla05" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                                  <Component id="txtTabla06" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="btn_updPassword" min="-2" pref="37" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btn_SalirGenerador" min="-2" pref="37" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel8" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="jPanel2" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jLabel3">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Cantarell" size="15" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Opcion 01"/>
-              </Properties>
-            </Component>
             <Component class="javax.swing.JButton" name="btnGenerar">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Generar"/>
@@ -234,74 +130,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_SalirGeneradorActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtIntentos">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="0"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtMensaje">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMensajeActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtTabla01">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla01ActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtTabla02">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla02ActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtTabla03">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla03ActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel5">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="No Intentos"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel6">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Mensaje"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel7">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Tablas Ganadoras"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel4">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Cantarell" size="15" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Opcion 02"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel8">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Tablas Ganadoras"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtTabla06">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla06ActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtTabla04">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla04ActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtTabla05">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla05ActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JButton" name="btnGenerar1">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cargar "/>
@@ -315,53 +143,100 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="juegoLetraUGrande" min="-2" max="-2" attributes="0"/>
-                              <Component id="juegoPleno" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="juegoLetraT" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="juegoLetraL" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="juegoLetraX" alignment="0" min="-2" pref="92" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="juegoLetraUGrande" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoPleno" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraT" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraL" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraX" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraO" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraZ" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraN" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraC" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraH" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraI" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraS" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraE" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraCuadro" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraCasita" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="juegoLetraLinvertida" min="-2" pref="200" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="nroBalotasC" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasH" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasI" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasPleno" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasX" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasL" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasLinvertida" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasCasita" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasCuadro" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasT" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasE" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasU" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasS" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasZ" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasO" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="nroBalotasN" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtTabla90" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla100" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla110" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla10" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla160" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla20" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla150" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla30" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla140" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla40" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla130" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla50" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla120" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla60" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla70" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla80" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtTabla91" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla101" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla111" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla11" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla21" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla31" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla121" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla131" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla141" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla41" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla151" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla51" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla161" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla61" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla71" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                      <Component id="txtTabla81" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="209" pref="209" max="-2" attributes="0"/>
+                                  <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="nroBalotasX" pref="51" max="32767" attributes="0"/>
-                              <Component id="nroBalotasL" max="32767" attributes="0"/>
-                              <Component id="nroBalotasT" max="32767" attributes="0"/>
-                              <Component id="nroBalotasU" max="32767" attributes="0"/>
-                              <Component id="nroBalotasPleno" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="txtTabla40" alignment="0" pref="47" max="32767" attributes="0"/>
-                              <Component id="txtTabla30" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtTabla20" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtTabla10" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtTabla50" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="txtTabla41" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtTabla31" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtTabla21" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtTabla11" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtTabla51" alignment="1" min="-2" pref="47" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="163" max="-2" attributes="0"/>
-                          <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="75" max="32767" attributes="0"/>
+                          <EmptySpace min="37" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="308" max="32767" attributes="0"/>
+                              <EmptySpace pref="322" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -375,46 +250,166 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="juegoPleno" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="nroBalotasPleno" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla10" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla11" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="juegoPleno" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="nroBalotasPleno" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla10" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla11" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="juegoLetraUGrande" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="nroBalotasU" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla20" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla21" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="juegoLetraUGrande" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="nroBalotasU" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla20" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla21" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="juegoLetraT" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="nroBalotasT" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla30" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla31" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="juegoLetraT" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="nroBalotasT" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla30" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla31" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="juegoLetraL" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="nroBalotasL" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla40" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla41" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="juegoLetraL" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="nroBalotasL" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla40" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla41" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="juegoLetraX" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="nroBalotasX" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla50" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtTabla51" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="juegoLetraX" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="nroBalotasX" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla50" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla51" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="39" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                                  <Component id="juegoLetraZ" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="juegoLetraO" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="juegoLetraN" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="juegoLetraC" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="juegoLetraH" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="nroBalotasZ" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                      <Component id="txtTabla60" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                      <Component id="txtTabla61" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="nroBalotasO" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="txtTabla70" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                              <Component id="txtTabla71" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                                  <Component id="txtTabla80" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                                  <Component id="nroBalotasN" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="txtTabla81" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                                  <Component id="txtTabla90" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                                  <Component id="nroBalotasC" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="txtTabla91" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                                  <Component id="txtTabla100" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                                  <Component id="nroBalotasH" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="txtTabla101" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="juegoLetraI" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="nroBalotasI" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla110" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="txtTabla111" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtTabla121" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                          <Component id="txtTabla120" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                          <Component id="nroBalotasS" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="txtTabla131" min="-2" pref="25" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="txtTabla141" min="-2" pref="25" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="txtTabla151" min="-2" pref="25" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="txtTabla161" min="-2" pref="25" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="txtTabla130" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                              <Component id="nroBalotasE" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="txtTabla140" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                              <Component id="nroBalotasLinvertida" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="txtTabla150" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                              <Component id="nroBalotasCuadro" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="txtTabla160" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                              <Component id="nroBalotasCasita" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                                  <Component id="juegoLetraS" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="juegoLetraE" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="juegoLetraLinvertida" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="juegoLetraCuadro" min="-2" pref="25" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="juegoLetraCasita" min="-2" pref="25" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace pref="105" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                               <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="183" max="32767" attributes="0"/>
+                              <EmptySpace pref="548" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -590,16 +585,327 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla51ActionPerformed"/>
                   </Events>
                 </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraZ">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra Z"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraZActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasZ">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasZActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla60">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla60ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla61">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla61ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraO">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra O"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraOActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasO">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasOActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla70">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla70ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla71">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla71ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraN">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra N"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraNActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasN">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasNActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla80">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla80ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla81">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla81ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraC">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra C"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraCActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasC">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasCActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla90">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla90ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla91">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla91ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraH">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra H"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraHActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasH">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasHActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla100">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla100ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla101">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla101ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraI">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra i"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraIActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasI">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasIActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla110">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla110ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla111">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla111ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraLinvertida">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra L Invertida"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraLinvertidaActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraCasita">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra Casita"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraCasitaActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraCuadro">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra Cuadro"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraCuadroActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraE">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra E"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraEActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="juegoLetraS">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Letra S"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="juegoLetraSActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasLinvertida">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasLinvertidaActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasCasita">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasCasitaActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasCuadro">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasCuadroActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasE">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasEActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="nroBalotasS">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nroBalotasSActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla160">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla160ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla150">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla150ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla140">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla140ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla130">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla130ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla120">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla120ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla121">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla121ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla131">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla131ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla141">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla141ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla151">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla151ActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtTabla161">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTabla161ActionPerformed"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JLabel" name="jLabel9">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Cantarell" size="15" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Opcion 03"/>
-              </Properties>
-            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel1">
