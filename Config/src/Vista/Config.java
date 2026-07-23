@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -74,8 +75,12 @@ public class Config extends javax.swing.JFrame {
         mod2.setColumnIdentifiers(new Object[]{"No. Tabla", "Codigo"});
 
         while (r.next()) {
+            /*t.setNumTabla(r.getInt("numTabla"));
+                t.setCodigo(r.getString("codigo"));
+             */
             modelo.addRow(new Object[]{r.getInt("numTabla"), r.getString("codigo")});
             jTablas.setModel(modelo);
+
         }
         jTablasE.removeAll();
 
@@ -83,38 +88,32 @@ public class Config extends javax.swing.JFrame {
 
     private void configuracionInicial() throws IOException {
         int i, j;
-
         con = new Conector();
         con.connect();
-
         MaxTablas = 0;
-
         excNum = new int[MAXEXCEPCIONES];
         for (i = 0; i < MAXEXCEPCIONES; i++) {
             excNum[i] = 0;
         }
-
         wTabla = new int[MAXWTABLA];
         for (i = 0; i < MAXWTABLA; i++) {
             wTabla[i] = 0;
         }
-
         vector = new int[MAXVECTOR];
         for (i = 0; i < MAXVECTOR; i++) {
             vector[i] = 0;
         }
-
         bingo = new int[MAXBINGO];
         for (i = 0; i < MAXBINGO; i++) {
             bingo[i] = 0;
         }
-
         bingo_w = new int[MAXBINGO];
         for (i = 0; i < MAXBINGO; i++) {
             bingo_w[i] = 0;
         }
-
-        if (!AccessFile.buscarFile(new File(AccessFile.getRutaFileDB() + "tablas.db")) || !AccessFile.buscarFile(new File(AccessFile.getRutaFiledb()))) {
+        if (!AccessFile.buscarFile(new File(AccessFile.getRutaFileDB() + "tablas.db")) || !AccessFile.buscarFile(new File(AccessFile.getRutaFiledb()))
+                // ||!AccessFile.validarLic(new File(AccessFile.getRutaFileDb()),"C")
+                ) {
             System.out.print("Error de Conexion a Base de Datos");
             System.exit(0);
         }
@@ -133,7 +132,6 @@ public class Config extends javax.swing.JFrame {
         BingoCodificacion = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         btnGenerar = new javax.swing.JButton();
         btn_updPassword = new javax.swing.JButton();
         btn_SalirGenerador = new javax.swing.JButton();
@@ -145,37 +143,7 @@ public class Config extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        txtTabla06 = new javax.swing.JTextField();
-        txtTabla04 = new javax.swing.JTextField();
-        txtTabla05 = new javax.swing.JTextField();
         btnGenerar1 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        nroBalotasPleno = new javax.swing.JTextField();
-        juegoPleno = new javax.swing.JCheckBox();
-        juegoLetraUGrande = new javax.swing.JCheckBox();
-        juegoLetraT = new javax.swing.JCheckBox();
-        juegoLetraL = new javax.swing.JCheckBox();
-        juegoLetraX = new javax.swing.JCheckBox();
-        nroBalotasX = new javax.swing.JTextField();
-        nroBalotasL = new javax.swing.JTextField();
-        nroBalotasT = new javax.swing.JTextField();
-        nroBalotasU = new javax.swing.JTextField();
-        txtTabla10 = new javax.swing.JTextField();
-        txtTabla20 = new javax.swing.JTextField();
-        txtTabla30 = new javax.swing.JTextField();
-        txtTabla40 = new javax.swing.JTextField();
-        txtTabla50 = new javax.swing.JTextField();
-        txtTabla11 = new javax.swing.JTextField();
-        txtTabla21 = new javax.swing.JTextField();
-        txtTabla31 = new javax.swing.JTextField();
-        txtTabla41 = new javax.swing.JTextField();
-        txtTabla51 = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTablas = new javax.swing.JTable();
@@ -197,9 +165,6 @@ public class Config extends javax.swing.JFrame {
         });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jLabel3.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
-        jLabel3.setText("Opcion 01");
 
         btnGenerar.setText("Generar");
         btnGenerar.addActionListener(new java.awt.event.ActionListener() {
@@ -254,29 +219,6 @@ public class Config extends javax.swing.JFrame {
 
         jLabel7.setText("Tablas Ganadoras");
 
-        jLabel4.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
-        jLabel4.setText("Opcion 02");
-
-        jLabel8.setText("Tablas Ganadoras");
-
-        txtTabla06.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla06ActionPerformed(evt);
-            }
-        });
-
-        txtTabla04.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla04ActionPerformed(evt);
-            }
-        });
-
-        txtTabla05.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla05ActionPerformed(evt);
-            }
-        });
-
         btnGenerar1.setText("Cargar ");
         btnGenerar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,341 +226,67 @@ public class Config extends javax.swing.JFrame {
             }
         });
 
-        jLabel17.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
-        jLabel17.setText("Seleccione el Juego");
-
-        jLabel18.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
-        jLabel18.setText("Nro de Balotas");
-
-        jLabel19.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
-        jLabel19.setText("Tabla Ganadora");
-
-        nroBalotasPleno.setText("0");
-        nroBalotasPleno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nroBalotasPlenoActionPerformed(evt);
-            }
-        });
-
-        juegoPleno.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        juegoPleno.setText("Pleno");
-        juegoPleno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                juegoPlenoActionPerformed(evt);
-            }
-        });
-
-        juegoLetraUGrande.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        juegoLetraUGrande.setText("Letra U Grande");
-        juegoLetraUGrande.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                juegoLetraUGrandeActionPerformed(evt);
-            }
-        });
-
-        juegoLetraT.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        juegoLetraT.setText("Letra T");
-        juegoLetraT.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                juegoLetraTActionPerformed(evt);
-            }
-        });
-
-        juegoLetraL.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        juegoLetraL.setText("Letra L");
-        juegoLetraL.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                juegoLetraLActionPerformed(evt);
-            }
-        });
-
-        juegoLetraX.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        juegoLetraX.setText("Letra X");
-        juegoLetraX.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                juegoLetraXActionPerformed(evt);
-            }
-        });
-
-        nroBalotasX.setText("0");
-        nroBalotasX.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nroBalotasXActionPerformed(evt);
-            }
-        });
-
-        nroBalotasL.setText("0");
-        nroBalotasL.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nroBalotasLActionPerformed(evt);
-            }
-        });
-
-        nroBalotasT.setText("0");
-        nroBalotasT.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nroBalotasTActionPerformed(evt);
-            }
-        });
-
-        nroBalotasU.setText("0");
-        nroBalotasU.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nroBalotasUActionPerformed(evt);
-            }
-        });
-
-        txtTabla10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla10ActionPerformed(evt);
-            }
-        });
-
-        txtTabla20.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla20ActionPerformed(evt);
-            }
-        });
-
-        txtTabla30.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla30ActionPerformed(evt);
-            }
-        });
-
-        txtTabla40.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla40ActionPerformed(evt);
-            }
-        });
-
-        txtTabla50.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla50ActionPerformed(evt);
-            }
-        });
-
-        txtTabla11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla11ActionPerformed(evt);
-            }
-        });
-
-        txtTabla21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla21ActionPerformed(evt);
-            }
-        });
-
-        txtTabla31.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla31ActionPerformed(evt);
-            }
-        });
-
-        txtTabla41.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla41ActionPerformed(evt);
-            }
-        });
-
-        txtTabla51.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTabla51ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(juegoLetraUGrande)
-                    .addComponent(juegoPleno)
-                    .addComponent(juegoLetraT)
-                    .addComponent(juegoLetraL)
-                    .addComponent(juegoLetraX, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(nroBalotasX, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                    .addComponent(nroBalotasL)
-                    .addComponent(nroBalotasT)
-                    .addComponent(nroBalotasU)
-                    .addComponent(nroBalotasPleno))
-                .addGap(37, 37, 37)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtTabla40, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
-                    .addComponent(txtTabla30, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTabla20, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTabla10, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTabla50))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtTabla41, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTabla31, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTabla21, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTabla11, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtTabla51, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(79, 79, 79))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(163, 163, 163)
-                .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel19)
-                .addGap(0, 75, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel17)
-                    .addContainerGap(308, Short.MAX_VALUE)))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel18)
-                    .addComponent(jLabel19))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(juegoPleno)
-                    .addComponent(nroBalotasPleno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(juegoLetraUGrande)
-                    .addComponent(nroBalotasU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(juegoLetraT)
-                    .addComponent(nroBalotasT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(juegoLetraL)
-                    .addComponent(nroBalotasL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(juegoLetraX)
-                    .addComponent(nroBalotasX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla50, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla51, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(1, 1, 1)
-                    .addComponent(jLabel17)
-                    .addContainerGap(183, Short.MAX_VALUE)))
-        );
-
-        jLabel9.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
-        jLabel9.setText("Opcion 03");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel3))
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTabla04, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTabla05, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTabla06, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jLabel6))
-                                        .addGap(47, 47, 47))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtIntentos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(txtTabla01, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtTabla02, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtTabla03, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(32, 32, 32)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnGenerar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnGenerar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_updPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_SalirGenerador, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(txtIntentos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(247, 247, 247)
+                        .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
+                        .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnGenerar1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(txtTabla01, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTabla02, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTabla03, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_SalirGenerador, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_updPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel5))
-                    .addComponent(txtIntentos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnGenerar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTabla01, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla02, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTabla03, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGenerar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTabla04, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTabla05, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTabla06, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_updPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtIntentos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel6)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnGenerar, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGenerar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_SalirGenerador, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(txtTabla01, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtTabla03, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTabla02, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn_updPassword)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel9)
-                        .addContainerGap())))
+                        .addComponent(btn_SalirGenerador)
+                        .addGap(276, 276, 276))))
         );
 
         jTabbedPane1.addTab("Configuracion Inicial", jPanel3);
@@ -727,7 +395,7 @@ public class Config extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addGap(35, 35, 35))
         );
 
         pack();
@@ -738,67 +406,6 @@ public class Config extends javax.swing.JFrame {
 
         con.close();
     }//GEN-LAST:event_formWindowClosed
-
-    private void txtTabla50ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla50ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla50ActionPerformed
-
-    private void txtTabla40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla40ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla40ActionPerformed
-
-    private void txtTabla30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla30ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla30ActionPerformed
-
-    private void txtTabla20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla20ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla20ActionPerformed
-
-    private void txtTabla10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla10ActionPerformed
-
-    private void nroBalotasUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nroBalotasUActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nroBalotasUActionPerformed
-
-    private void nroBalotasTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nroBalotasTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nroBalotasTActionPerformed
-
-    private void nroBalotasLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nroBalotasLActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nroBalotasLActionPerformed
-
-    private void nroBalotasXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nroBalotasXActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nroBalotasXActionPerformed
-
-    private void juegoLetraXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juegoLetraXActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_juegoLetraXActionPerformed
-
-    private void juegoLetraLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juegoLetraLActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_juegoLetraLActionPerformed
-
-    private void juegoLetraTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juegoLetraTActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_juegoLetraTActionPerformed
-
-    private void juegoLetraUGrandeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juegoLetraUGrandeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_juegoLetraUGrandeActionPerformed
-
-    private void juegoPlenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juegoPlenoActionPerformed
-
-    }//GEN-LAST:event_juegoPlenoActionPerformed
-
-    private void nroBalotasPlenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nroBalotasPlenoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nroBalotasPlenoActionPerformed
 
     private void btnGenerar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar1ActionPerformed
         try {
@@ -811,61 +418,36 @@ public class Config extends javax.swing.JFrame {
             txtTabla01.setText(conf1.getTabla1());
             txtTabla02.setText(conf1.getTabla2());
             txtTabla03.setText(conf1.getTabla3());
-
+            
+/*                       
             Configuracion conf2 = AccessFile.getConf(AccessFile.buscarRegistro(2));
-            txtTabla04.setText(conf2.getTabla1());
-            txtTabla05.setText(conf2.getTabla2());
-            txtTabla06.setText(conf2.getTabla3());
-
-            Configuracion conf3 = AccessFile.getConf(AccessFile.buscarRegistro(3));          
-            nroBalotasPleno.setText(Integer.toString(conf3.getIntento()));
-            txtTabla10.setText(conf3.getTabla1());
-            txtTabla11.setText(conf3.getTabla2());
-
+            Configuracion conf3 = AccessFile.getConf(AccessFile.buscarRegistro(3));
             Configuracion conf4 = AccessFile.getConf(AccessFile.buscarRegistro(4));
-            nroBalotasU.setText(Integer.toString(conf4.getIntento()));
-            txtTabla20.setText(conf4.getTabla1());
-            txtTabla21.setText(conf4.getTabla2());
-
-            Configuracion conf5 = AccessFile.getConf(AccessFile.buscarRegistro(5));
-            nroBalotasT.setText(Integer.toString(conf5.getIntento()));
-            txtTabla30.setText(conf5.getTabla1());
-            txtTabla31.setText(conf5.getTabla2());
-
-            Configuracion conf6 = AccessFile.getConf(AccessFile.buscarRegistro(6));
-            nroBalotasL.setText(Integer.toString(conf6.getIntento()));
-            txtTabla40.setText(conf6.getTabla1());
-            txtTabla41.setText(conf6.getTabla2());
-            
+            Configuracion conf5= AccessFile.getConf(AccessFile.buscarRegistro(5));           
+            Configuracion conf6= AccessFile.getConf(AccessFile.buscarRegistro(6));
             Configuracion conf7= AccessFile.getConf(AccessFile.buscarRegistro(7));
-            nroBalotasX.setText(Integer.toString(conf7.getIntento()));
-            txtTabla50.setText(conf7.getTabla1());
-            txtTabla51.setText(conf7.getTabla2());
+            Configuracion conf8 = AccessFile.getConf(AccessFile.buscarRegistro(8));          
+            Configuracion conf9 = AccessFile.getConf(AccessFile.buscarRegistro(9));
+            Configuracion conf10 = AccessFile.getConf(AccessFile.buscarRegistro(10));
+            Configuracion conf11 = AccessFile.getConf(AccessFile.buscarRegistro(11));
+            Configuracion conf12= AccessFile.getConf(AccessFile.buscarRegistro(12));           
+            Configuracion conf13= AccessFile.getConf(AccessFile.buscarRegistro(13));
+
+  */          
+            /***/
             
-            /*int i = AccessFile.buscarRegistro( 1 );
-            if(i==-1) {
-                JOptionPane.showMessageDialog(this, "Ningún registro coincide con los datos de búsqueda.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            JOptionPane.showMessageDialog(this, "La primera coincidencia indica: "+AccessFile.getConf(i), "Notificación", JOptionPane.INFORMATION_MESSAGE);
-            */
+            
+            
+            /***/
+            
+            
+            
+            
             AccessFile.cerrar();
         } catch (IOException ex) {
             Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGenerar1ActionPerformed
-
-    private void txtTabla05ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla05ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla05ActionPerformed
-
-    private void txtTabla04ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla04ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla04ActionPerformed
-
-    private void txtTabla06ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla06ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla06ActionPerformed
 
     private void txtTabla03ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla03ActionPerformed
         // TODO add your handling code here:
@@ -927,143 +509,33 @@ public class Config extends javax.swing.JFrame {
 
         }
 
-        String tabla4 = txtTabla04.getText().trim().isEmpty() ? "-1" : txtTabla04.getText().trim();
-        String tabla5 = txtTabla05.getText().trim().isEmpty() ? "-1" : txtTabla05.getText().trim();
-        String tabla6 = txtTabla06.getText().trim().isEmpty() ? "-1" : txtTabla06.getText().trim();
-
-        /*Verificar personalizar*/
-        String _nroBal10 = nroBalotasPleno.getText();
-        int nroBal10=0;
-        String tabla10 = txtTabla10.getText().trim().isEmpty() ? "-1" : txtTabla10.getText().trim();
-        String tabla11 = txtTabla11.getText().trim().isEmpty() ? "-1" : txtTabla11.getText().trim();
-        if (juegoPleno.isSelected()) {
-            if (_nroBal10.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor a cero (0)!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            try {
-                nroBal10 = Integer.parseInt(_nroBal10);
-            } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor o igual a cero (0)!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (nroBal10 > 0) {
-                if (tabla10.isEmpty() && tabla11.isEmpty() ) {
-                    JOptionPane.showMessageDialog(this, "¡Debe ingresar un Numero de Tabla!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            }
-        }
-
-        String _nroBal20 = nroBalotasU.getText();
-        int nroBal20=0;
-        String tabla20 = txtTabla20.getText().trim().isEmpty() ? "-1" : txtTabla20.getText().trim();
-        String tabla21 = txtTabla21.getText().trim().isEmpty() ? "-1" : txtTabla21.getText().trim();
-        if (juegoLetraUGrande.isSelected()) {
-            if (_nroBal10.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor a cero (0)!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            try {
-                nroBal20 = Integer.parseInt(_nroBal20);
-            } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor o igual a cero (0)!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (nroBal20 > 0) {
-                if (tabla20.isEmpty() && tabla21.isEmpty() ) {
-                    JOptionPane.showMessageDialog(this, "¡Debe ingresar un Numero de Tabla!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            }
-        }
-
-        String _nroBal30 = nroBalotasT.getText();
-        int nroBal30=0;
-        String tabla30 = txtTabla30.getText().trim().isEmpty() ? "-1" : txtTabla30.getText().trim();
-        String tabla31 = txtTabla31.getText().trim().isEmpty() ? "-1" : txtTabla31.getText().trim();
-        if (juegoLetraT.isSelected()) {
-            if (_nroBal30.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor a cero (0)!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            try {
-                nroBal30 = Integer.parseInt(_nroBal30);
-            } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor o igual a cero (0)!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (nroBal30 > 0) {
-                if (tabla30.isEmpty() && tabla31.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "¡Debe ingresar un Numero de Tabla!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            }
-        }
-
-        String _nroBal40 = nroBalotasL.getText();
-        int nroBal40=0;
-        String tabla40 = txtTabla40.getText().trim().isEmpty() ? "-1" : txtTabla40.getText().trim();
-        String tabla41 = txtTabla41.getText().trim().isEmpty() ? "-1" : txtTabla41.getText().trim();
-        if (juegoLetraL.isSelected()) {
-            if (_nroBal40.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor a cero (0)!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            try {
-                nroBal40 = Integer.parseInt(_nroBal40);
-            } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor o igual a cero (0)!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (nroBal40 > 0) {
-                if (tabla40.isEmpty() && tabla41.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "¡Debe ingresar un Numero de Tabla!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            }
-        }
-
-        String _nroBal50 = nroBalotasX.getText();
-        int nroBal50=0;
-        String tabla50 = txtTabla50.getText().trim().isEmpty() ? "-1" : txtTabla50.getText().trim();
-        String tabla51 = txtTabla51.getText().trim().isEmpty() ? "-1" : txtTabla51.getText().trim();
-        if (juegoLetraX.isSelected()) {
-            if (_nroBal50.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor a cero (0)!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            try {
-                nroBal50 = Integer.parseInt(_nroBal50);
-            } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(this, "¡Debe ingresar un número entero mayor o igual a cero (0)!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (nroBal50 > 0) {
-                if (tabla50.isEmpty() && tabla51.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "¡Debe ingresar un Numero de Tabla!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            }
-        }
-
         try {
             AccessFile.crearFileTablas(new File("config.dat"));
             AccessFile.añadirConf(new Configuracion(1, intento, mensaje, tabla1, tabla2, tabla3));
-            AccessFile.añadirConf(new Configuracion(2, 0, "N/A", tabla4, tabla5, tabla6));
-            AccessFile.añadirConf(new Configuracion(3, nroBal10, "N/A", tabla10, tabla11, "N/A"));
-            AccessFile.añadirConf(new Configuracion(4, nroBal20, "N/A", tabla20, tabla21, "N/A"));
-            AccessFile.añadirConf(new Configuracion(5, nroBal30, "N/A", tabla30, tabla31, "N/A"));
-            AccessFile.añadirConf(new Configuracion(6, nroBal40, "N/A", tabla40, tabla41, "N/A"));
-            AccessFile.añadirConf(new Configuracion(7, nroBal50, "N/A", tabla50, tabla51, "N/A"));
+            AccessFile.añadirConf(new Configuracion(2, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(3, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(4, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(5, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(6, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(7, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(8, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(9, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(10, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(11, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(12, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(13, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(14, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(15, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(16, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(17, 0, "N/A", "N/A", "N/A", "N/A"));
+            AccessFile.añadirConf(new Configuracion(18, 0, "N/A", "N/A", "N/A", "N/A"));
+          
 
             AccessFile.cerrar();
             JOptionPane.showMessageDialog(this, "El registro se realizó correctamente.", "Notificación", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error en la escritura de datos.", "Error", JOptionPane.ERROR_MESSAGE);
-
         }
-
     }//GEN-LAST:event_btnGenerarActionPerformed
 
     private void eliminarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarDatosActionPerformed
@@ -1124,26 +596,6 @@ public class Config extends javax.swing.JFrame {
 
     }//GEN-LAST:event_pasarAeliminarActionPerformed
 
-    private void txtTabla11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla11ActionPerformed
-
-    private void txtTabla21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla21ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla21ActionPerformed
-
-    private void txtTabla31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla31ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla31ActionPerformed
-
-    private void txtTabla41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla41ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla41ActionPerformed
-
-    private void txtTabla51ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTabla51ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTabla51ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup BingoCodificacion;
     private javax.swing.ButtonGroup Juego;
@@ -1153,54 +605,23 @@ public class Config extends javax.swing.JFrame {
     private javax.swing.JButton btn_updPassword;
     private javax.swing.JButton eliminarDatos;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTablas;
     private javax.swing.JTable jTablasE;
-    private javax.swing.JCheckBox juegoLetraL;
-    private javax.swing.JCheckBox juegoLetraT;
-    private javax.swing.JCheckBox juegoLetraUGrande;
-    private javax.swing.JCheckBox juegoLetraX;
-    private javax.swing.JCheckBox juegoPleno;
-    private javax.swing.JTextField nroBalotasL;
-    private javax.swing.JTextField nroBalotasPleno;
-    private javax.swing.JTextField nroBalotasT;
-    private javax.swing.JTextField nroBalotasU;
-    private javax.swing.JTextField nroBalotasX;
     private javax.swing.JButton pasarAeliminar;
     private javax.swing.JTextField txtIntentos;
     private javax.swing.JTextField txtMensaje;
     private javax.swing.JTextField txtTabla01;
     private javax.swing.JTextField txtTabla02;
     private javax.swing.JTextField txtTabla03;
-    private javax.swing.JTextField txtTabla04;
-    private javax.swing.JTextField txtTabla05;
-    private javax.swing.JTextField txtTabla06;
-    private javax.swing.JTextField txtTabla10;
-    private javax.swing.JTextField txtTabla11;
-    private javax.swing.JTextField txtTabla20;
-    private javax.swing.JTextField txtTabla21;
-    private javax.swing.JTextField txtTabla30;
-    private javax.swing.JTextField txtTabla31;
-    private javax.swing.JTextField txtTabla40;
-    private javax.swing.JTextField txtTabla41;
-    private javax.swing.JTextField txtTabla50;
-    private javax.swing.JTextField txtTabla51;
     // End of variables declaration//GEN-END:variables
 
     /**
