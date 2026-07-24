@@ -803,7 +803,7 @@ public class Config extends javax.swing.JFrame {
     private void btnGenerar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar1ActionPerformed
         try {
             // TODO add your handling code here:
-            AccessFile.leerFileTablas(new File("config.dat"));
+            AccessFile.leerFileTablas(new File(AccessFile.getRutaFileDB() + "config.dat"));
 
             Configuracion conf1 = AccessFile.getConf(AccessFile.buscarRegistro(1));
             txtIntentos.setText(Integer.toString(conf1.getIntento()));
@@ -1048,7 +1048,7 @@ public class Config extends javax.swing.JFrame {
         }
 
         try {
-            AccessFile.crearFileTablas(new File("config.dat"));
+            AccessFile.crearFileTablas(new File(AccessFile.getRutaFileDB() + "config.dat"));
             AccessFile.añadirConf(new Configuracion(1, intento, mensaje, tabla1, tabla2, tabla3));
             AccessFile.añadirConf(new Configuracion(2, 0, "N/A", tabla4, tabla5, tabla6));
             AccessFile.añadirConf(new Configuracion(3, nroBal10, "N/A", tabla10, tabla11, "N/A"));
