@@ -381,7 +381,7 @@ public class Config extends javax.swing.JFrame {
     private void btnGenerar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar1ActionPerformed
         try {
             // TODO add your handling code here:
-            AccessFile.leerFileTablas(new File("config.dat"));
+            AccessFile.leerFileTablas(new File(AccessFile.getRutaFileDB() + "config.dat"));
 
 
             Configuracion conf2 = AccessFile.getConf(AccessFile.buscarRegistro(2));
@@ -423,7 +423,7 @@ public class Config extends javax.swing.JFrame {
         String tabla6 = txtTabla06.getText().trim().isEmpty() ? "-1" : txtTabla06.getText().trim();
 
         try {
-            AccessFile.crearFileTablas(new File("config.dat"));
+            AccessFile.crearFileTablas(new File(AccessFile.getRutaFileDB() + "config.dat"));
             AccessFile.añadirConf(new Configuracion(1, 0, "N/A", "N/A", "N/A", "N/A"));
             AccessFile.añadirConf(new Configuracion(2, 0, "N/A", tabla4, tabla5, tabla6));
             AccessFile.añadirConf(new Configuracion(3, 0, "N/A", "N/A", "N/A", "N/A"));
