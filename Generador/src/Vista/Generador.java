@@ -8,6 +8,7 @@ package Vista;
 //import Controlador.AccesoAleatorio;
 import Controlador.AccesoAleatorio;
 import Controlador.Conector;
+import Controlador.PreferenciasGenerador;
 import Modelo.Tabla;
 import java.io.File;
 import java.io.IOException;
@@ -49,11 +50,29 @@ public class Generador extends javax.swing.JFrame {
 
     private Conector con;
 
+    private PreferenciasGenerador prefs;
+
     public Generador() throws IOException {
         int i, j;
         initComponents();
         this.setLocationRelativeTo(null);
-        
+
+        // Preferencias persistentes: que modos de generacion se le ofrecen al
+        // operador (solo Normal, solo Personalizada o ambas).
+        prefs = new PreferenciasGenerador();
+        aplicarModosDisponibles();
+
+        // Gesto oculto: Ctrl+Shift+DobleClic sobre el rotulo "TABLAS A GENERAR"
+        // abre la ventana de opciones de generacion.
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2 && e.isControlDown() && e.isShiftDown()) {
+                    abrirOpcionesGeneracion();
+                }
+            }
+        });
+
         
         winUpdPassword = new updPassword();
         
@@ -663,6 +682,50 @@ public class Generador extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * Abre la ventana oculta de opciones de generacion y, si el administrador
+     * guardo, aplica de inmediato lo elegido.
+     */
+    private void abrirOpcionesGeneracion() {
+        OpcionesGeneracion dlg = new OpcionesGeneracion(this, prefs);
+        dlg.setVisible(true);
+        if (dlg.isAceptado()) {
+            aplicarModosDisponibles();
+        }
+    }
+
+    /**
+     * Deja a la vista solo los modos de generacion habilitados en las
+     * preferencias. Si queda uno solo, se selecciona de una vez (y se muestran u
+     * ocultan los paneles de Excepciones y Tablas Ganadoras segun corresponda).
+     */
+    private void aplicarModosDisponibles() {
+        String modos = prefs.getModosDisponibles();
+        boolean verNormal = !PreferenciasGenerador.MODO_PERSONALIZADA.equals(modos);
+        boolean verCustom = !PreferenciasGenerador.MODO_NORMAL.equals(modos);
+
+        juegoNormal.setVisible(verNormal);
+        juegoCustom.setVisible(verCustom);
+
+        // No dejar seleccionado un modo que ya no esta disponible.
+        if ((!verNormal && juegoNormal.isSelected()) || (!verCustom && juegoCustom.isSelected())) {
+            Juego.clearSelection();
+        }
+
+        if (verNormal && !verCustom) {
+            juegoNormal.setSelected(true);
+            jPanel1.setVisible(false);
+            jPanel2.setVisible(false);
+        } else if (verCustom && !verNormal) {
+            juegoCustom.setSelected(true);
+            jPanel1.setVisible(true);
+            jPanel2.setVisible(true);
+        }
+
+        jPanel3.revalidate();
+        jPanel3.repaint();
+    }
 
     private void juegoCustomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juegoCustomActionPerformed
         // TODO add your handling code here:
