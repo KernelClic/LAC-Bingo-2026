@@ -129,13 +129,12 @@ public class Entrada extends javax.swing.JFrame {
                     this.setVisible(false);
                     wPantalla = new Pantalla();
 
-                    // Modo "partida programada": si existe /Bingo/db/config.dat,
-                    // se carga la configuracion binaria y se activa el amaño de
-                    // cartones pre-fijados. Sin el archivo, juego normal en vivo.
-                    File fCfg = new File(AccessFile.getRutaFileDB() + "config.dat");
-                    if (AccessFile.buscarFile(fCfg)) {
+                    // Modo "partida programada": si hay partida guardada en
+                    // /Bingo/db/config.ker, se carga y se activa el amaño de
+                    // cartones pre-fijados. Sin ella, juego normal en vivo.
+                    if (AccessFile.hayPartida()) {
                         wPantalla.setModoProgramado(true);
-                        AccessFile.leerFileTablas(fCfg);
+                        AccessFile.cargarPartida();
 
                         Configuracion conf1 = AccessFile.getConf(AccessFile.buscarRegistro(1));
                         if (conf1 != null && conf1.getIntento() > 0) {
