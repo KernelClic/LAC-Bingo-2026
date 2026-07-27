@@ -6,6 +6,7 @@
 package Vista;
 
 import Controlador.Bingo;
+import Controlador.Licencia;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -134,6 +135,48 @@ public class Entrada extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    // =====================================================================
+    // Seguridad: activacion atada al equipo (node-lock)
+    // =====================================================================
+    private static boolean asegurarLicencia() {
+        if (Licencia.estaActivado()) return true;
+        while (true) {
+            String id = Licencia.idEquipo();
+            javax.swing.JTextField tfClave = new javax.swing.JTextField(24);
+            javax.swing.JTextField tfId = new javax.swing.JTextField(id);
+            tfId.setEditable(false);
+            tfId.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+            tfId.setOpaque(false);
+            tfId.setFont(tfId.getFont().deriveFont(java.awt.Font.BOLD));
+            javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.GridBagLayout());
+            java.awt.GridBagConstraints c = new java.awt.GridBagConstraints();
+            c.insets = new java.awt.Insets(4, 6, 4, 6);
+            c.anchor = java.awt.GridBagConstraints.WEST;
+            c.fill = java.awt.GridBagConstraints.HORIZONTAL;
+            c.gridx = 0; c.gridy = 0; c.gridwidth = 2;
+            panel.add(new javax.swing.JLabel("<html>Este equipo no está activado.<br>"
+                    + "Entregue el <b>ID de equipo</b> a KernelClic para obtener su clave.</html>"), c);
+            c.gridwidth = 1;
+            c.gridx = 0; c.gridy = 1; panel.add(new javax.swing.JLabel("ID de equipo:"), c);
+            c.gridx = 1; c.gridy = 1; panel.add(tfId, c);
+            c.gridx = 0; c.gridy = 2; panel.add(new javax.swing.JLabel("Clave de activación:"), c);
+            c.gridx = 1; c.gridy = 2; panel.add(tfClave, c);
+            int opcion = javax.swing.JOptionPane.showConfirmDialog(null, panel,
+                    "Activación del aplicativo — KernelClic",
+                    javax.swing.JOptionPane.OK_CANCEL_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE);
+            if (opcion != javax.swing.JOptionPane.OK_OPTION) return false;
+            if (Licencia.activar(tfClave.getText())) {
+                javax.swing.JOptionPane.showMessageDialog(null,
+                        "Equipo activado correctamente.", "Listo",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                return true;
+            }
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Clave incorrecta para este equipo. Verifique e intente de nuevo.",
+                    "Activación fallida", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -157,6 +200,12 @@ public class Entrada extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Entrada.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+
+        /* Validacion por licencia (node-lock) antes de abrir el configurador */
+        if (!asegurarLicencia()) {
+            System.exit(0);
+            return;
+        }
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

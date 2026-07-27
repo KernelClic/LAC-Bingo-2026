@@ -1,20 +1,19 @@
-# Config
+# Config Universal
 
-Rama de producto de larga vida. Recibe de `main` los cambios compartidos
-(Licencia/KeyGen + nucleo) via merge en cascada.
+Unifica en **una sola ventana** las tres variantes del configurador mediante
+pestañas (`JTabbedPane`):
 
-Importar codigo base desde el repo actual: `LAC-Bingo/Bingo_Config`.
+- **01 · Mensaje / Intentos / Tablas** (ex Config_01)
+- **02 · Tablas / Editar** (ex Config_02)
+- **03 · Figuras / Letras (completo)** (ex Config_03, superset)
 
-## Familia Config (base + variantes)
+Cada pestaña reutiliza integramente la UI y la logica de su variante
+(`Config01/02/03.java`); `Vista/Config.java` solo arma el `JTabbedPane`
+reparentando el `contentPane` de cada una.
 
-`config/base` es el nucleo comun del configurador (scaffold + Controlador/Modelo
-que compilan contra `/Bingo/lib`). Las variantes cambian solo `Vista/Config.java`
-y `Vista/Config.form` (la UI y como se arma el `config.dat`):
+Cambios respecto a las variantes sueltas:
+- **Se quito** el cambio de contraseña (`updPassword` eliminado; boton oculto).
+- **Se aplica validacion por licencia** node-lock (`Controlador.Licencia`):
+  `Entrada` exige equipo activado antes de abrir el configurador.
 
-- `config/01` -> mensaje + No. intentos + tablas ganadoras (Bingo_Config_01)
-- `config/02` -> tablas ganadoras + editar/eliminar (Bingo_Config_02)
-- `config/03` -> superset: todas las letras/figuras (Bingo_Config_03)
-
-Todas escriben `/Bingo/db/config.dat` (registros de tamaño fijo) que la
-`Pantalla` consume en su "modo partida programada". Los cambios compartidos
-bajan por cascada `config/base -> config/NN`.
+Genera el mismo `/Bingo/db/config.dat` que consume la Pantalla en modo programado.
