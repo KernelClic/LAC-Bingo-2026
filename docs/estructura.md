@@ -28,6 +28,20 @@ for a in reporte-universal config figura-archivo; do
 done
 ```
 
+## La familia config y su excepcion
+
+`config/base` cascadea hacia `config/01`, `config/02` y `config/03`, que son
+variantes del MISMO formulario (`Vista/Config.java`). Los merges suelen chocar
+en ese archivo porque cada variante decide a proposito que registros escribe en
+`config.dat`; se resuelven **conservando el lado de la variante** y tomando de
+la base solo lo que sea genuinamente comun.
+
+`config/universal` NO entra en esa cascada. Alli `Vista/Config.java` es otro
+archivo — el caparazon del `JTabbedPane` que reparenta a Config01/02/03 — asi
+que mergear `config/base` mezcla dos cosas sin relacion. Su cascada valida es
+`main -> config/universal`, y un cambio de la base se porta a mano cuando
+aplique (normalmente va en `Config01/02/03.java`, no en `Config.java`).
+
 ## Subir un fix generico descubierto en una variante
 ```
 # desde la variante, aislar el/los commit(s) genericos y llevarlos a base:
