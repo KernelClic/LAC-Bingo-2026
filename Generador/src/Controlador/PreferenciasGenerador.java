@@ -66,6 +66,15 @@ public class PreferenciasGenerador {
     /** Preferencias en memoria (se conserva el orden de escritura). */
     private final Map<String, String> valores = new LinkedHashMap<>();
 
+    /**
+     * Claves que ESTE objeto cambio desde la ultima lectura. Al guardar solo se
+     * imponen ellas y el resto se toma del disco, para no pisar lo que hayan
+     * escrito los otros programas. Importa de veras: en el mismo archivo vive
+     * ahora la partida programada (claves {@code partida.*}) que escribe el
+     * Config y lee la Pantalla; sobrescribir el archivo entero la borraria.
+     */
+    private final java.util.Set<String> modificadas = new java.util.LinkedHashSet<>();
+
     public PreferenciasGenerador() {
         cargar();
     }
@@ -94,6 +103,7 @@ public class PreferenciasGenerador {
      */
     public final void cargar() {
         valores.clear();
+        modificadas.clear();
         File archivo = getArchivo();
         if (archivo.exists() && archivo.isFile()) {
             leerBinario(archivo);
@@ -103,6 +113,10 @@ public class PreferenciasGenerador {
     }
 
     private void leerBinario(File archivo) {
+        leerBinarioEn(archivo, valores);
+    }
+
+    private static void leerBinarioEn(File archivo, Map<String, String> destino) {
         try (DataInputStream in = new DataInputStream(new FileInputStream(archivo))) {
             if (in.readInt() != MAGIC) {
                 return;                      // archivo ajeno o dañado
@@ -124,10 +138,10 @@ public class PreferenciasGenerador {
             for (int i = 0; i < n; i++) {
                 String clave = bloque.readUTF();
                 String valor = bloque.readUTF();
-                valores.put(clave, valor);
+                destino.put(clave, valor);
             }
         } catch (IOException ex) {
-            valores.clear();                 // se trabaja con los valores por defecto
+            destino.clear();                 // se trabaja con los valores por defecto
         }
     }
 
@@ -144,11 +158,19 @@ public class PreferenciasGenerador {
             carpeta.mkdirs();
         }
 
+        Map<String, String> aEscribir = new LinkedHashMap<>();
+        if (archivo.exists() && archivo.isFile()) {
+            leerBinarioEn(archivo, aEscribir);   // punto de partida: el disco
+        }
+        for (String clave : modificadas) {       // encima, lo propio
+            aEscribir.put(clave, valores.get(clave));
+        }
+
         try {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             try (DataOutputStream bloque = new DataOutputStream(buffer)) {
-                bloque.writeInt(valores.size());
-                for (Map.Entry<String, String> e : valores.entrySet()) {
+                bloque.writeInt(aEscribir.size());
+                for (Map.Entry<String, String> e : aEscribir.entrySet()) {
                     bloque.writeUTF(e.getKey());
                     bloque.writeUTF(e.getValue());
                 }
@@ -162,6 +184,9 @@ public class PreferenciasGenerador {
                 out.writeInt(datos.length);
                 out.write(datos);
             }
+            valores.clear();
+            valores.putAll(aEscribir);
+            modificadas.clear();
             return true;
         } catch (IOException ex) {
             return false;
@@ -186,6 +211,7 @@ public class PreferenciasGenerador {
         }
         for (String clave : props.stringPropertyNames()) {
             valores.put(clave, props.getProperty(clave));
+            modificadas.add(clave);
         }
         if (guardar()) {
             anterior.delete();
@@ -214,6 +240,7 @@ public class PreferenciasGenerador {
 
     public void setModosDisponibles(String modo) {
         valores.put(CLAVE_MODOS, modo);
+        modificadas.add(CLAVE_MODOS);
     }
 
     // =====================================================================
