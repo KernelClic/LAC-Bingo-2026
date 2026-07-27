@@ -59,11 +59,11 @@ public final class Pantalla extends javax.swing.JFrame {
     private int index;
     private Conector con;
 
-    // ==== Modo "partida programada" (config.dat) ====
-    // Cuando existe /Bingo/db/config.dat, Entrada carga estos valores y activa
+    // ==== Modo "partida programada" (config.ker) ====
+    // Cuando hay partida en /Bingo/db/config.ker, Entrada carga estos valores y activa
     // modoProgramado. En ese modo, la deteccion de ganador usa las sobrecargas
     // del Conector que fuerzan a ganar los cartones pre-fijados (codTablaXY).
-    // Sin config.dat, modoProgramado=false y el comportamiento es el de siempre.
+    // Sin partida guardada, modoProgramado=false y el comportamiento es el de siempre.
     private boolean modoProgramado = false;
     private int iteracion = -1;
     private int Contador = 0;
@@ -440,7 +440,7 @@ public final class Pantalla extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    // ==== API de carga de config.dat (invocada por Entrada en modo programado) ====
+    // ==== API de carga de la partida (invocada por Entrada en modo programado) ====
 
     /** Activa/desactiva el modo partida programada. */
     public void setModoProgramado(boolean b) {
