@@ -21,8 +21,8 @@ import javax.swing.SwingConstants;
 /**
  * Ventana oculta de configuracion del Config Universal. Se abre con el gesto
  * Ctrl+Shift+DobleClic sobre la tira de pestañas y permite habilitar cualquier
- * combinacion de los modulos opcionales (01, 02, 03 y "Rangos de Tablas"):
- * solo los marcados quedan visibles como pestañas.
+ * combinacion de los modulos opcionales (01, 02, 03, "Rangos de Tablas" y
+ * "Mantenimiento"): solo los marcados quedan visibles como pestañas.
  *
  * La eleccion se guarda en el archivo binario de preferencias
  * (/Bingo/db/config.ker), el mismo que usa el Generador Universal.
@@ -37,6 +37,7 @@ public class OpcionesConfig extends JDialog {
     private final JCheckBox ch02 = new JCheckBox("02 · Tablas / Editar");
     private final JCheckBox ch03 = new JCheckBox("03 · Figuras / Letras (completo)");
     private final JCheckBox chRG = new JCheckBox("Rangos de Tablas");
+    private final JCheckBox chMT = new JCheckBox("Mantenimiento (eliminar config.ker)");
 
     private boolean aceptado = false;
 
@@ -67,6 +68,7 @@ public class OpcionesConfig extends JDialog {
         opciones.add(ch02);
         opciones.add(ch03);
         opciones.add(chRG);
+        opciones.add(chMT);
 
         marcarSegunPreferencias();
 
@@ -116,6 +118,7 @@ public class OpcionesConfig extends JDialog {
         ch02.setSelected(prefs.tieneModulo(Preferencias.MODULO_02));
         ch03.setSelected(prefs.tieneModulo(Preferencias.MODULO_03));
         chRG.setSelected(prefs.tieneModulo(Preferencias.MODULO_RANGOS));
+        chMT.setSelected(prefs.tieneModulo(Preferencias.MODULO_MANTENIMIENTO));
     }
 
     private void guardar() {
@@ -131,6 +134,9 @@ public class OpcionesConfig extends JDialog {
         }
         if (chRG.isSelected()) {
             elegidos.add(Preferencias.MODULO_RANGOS);
+        }
+        if (chMT.isSelected()) {
+            elegidos.add(Preferencias.MODULO_MANTENIMIENTO);
         }
 
         if (elegidos.isEmpty()) {
