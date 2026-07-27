@@ -53,12 +53,94 @@ public class Config01 extends javax.swing.JFrame {
 
     public Config01() throws IOException, SQLException {
         initComponents();
+        reorganizarPanelConfiguracion();
         this.setLocationRelativeTo(null);
         jTablasE.removeAll();
         jTablas.removeAll();
         configuracionInicial();
         rangoTablas();
 
+    }
+
+    /**
+     * Rearma el panel "Configuracion Inicial" con una rejilla limpia de tres
+     * filas (No Intentos / Mensaje / Tablas Ganadoras) y los botones alineados
+     * a la derecha, todos del mismo ancho y con su altura natural.
+     *
+     * El layout original venia del editor de formularios y tenia dos defectos:
+     * el boton "Generar" se estiraba a toda la altura disponible
+     * (DEFAULT_SIZE, 35, Short.MAX_VALUE) y al final habia un hueco fijo de 276
+     * px que agrandaba la ventana sin motivo. Se rehace aqui, despues de
+     * initComponents(), para no tocar el bloque generado.
+     */
+    private void reorganizarPanelConfiguracion() {
+        // "Cambiar Contraseña" no aplica en la version Universal; se retira del
+        // panel para que no ocupe lugar en la rejilla.
+        jPanel3.remove(btn_updPassword);
+
+        final int ANCHO_BOTON = 160;
+
+        javax.swing.GroupLayout dis = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(dis);
+        dis.setAutoCreateGaps(true);
+        dis.setAutoCreateContainerGaps(true);
+
+        dis.setHorizontalGroup(
+            dis.createSequentialGroup()
+                .addGroup(dis.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addGap(18)
+                .addGroup(dis.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtIntentos, javax.swing.GroupLayout.PREFERRED_SIZE, 60,
+                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 267,
+                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(dis.createSequentialGroup()
+                        .addComponent(txtTabla01, javax.swing.GroupLayout.PREFERRED_SIZE, 79,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTabla02, javax.swing.GroupLayout.PREFERRED_SIZE, 79,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTabla03, javax.swing.GroupLayout.PREFERRED_SIZE, 85,
+                                javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18)
+                .addGroup(dis.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGenerar, javax.swing.GroupLayout.PREFERRED_SIZE, ANCHO_BOTON,
+                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGenerar1, javax.swing.GroupLayout.PREFERRED_SIZE, ANCHO_BOTON,
+                            javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_SalirGenerador, javax.swing.GroupLayout.PREFERRED_SIZE, ANCHO_BOTON,
+                            javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        dis.setVerticalGroup(
+            dis.createSequentialGroup()
+                .addGroup(dis.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtIntentos, javax.swing.GroupLayout.PREFERRED_SIZE,
+                            javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGenerar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(dis.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE,
+                            javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGenerar1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(dis.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtTabla01, javax.swing.GroupLayout.PREFERRED_SIZE,
+                            javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTabla02, javax.swing.GroupLayout.PREFERRED_SIZE,
+                            javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTabla03, javax.swing.GroupLayout.PREFERRED_SIZE,
+                            javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_SalirGenerador))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
     }
 
     private void rangoTablas() throws SQLException, IOException {
