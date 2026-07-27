@@ -34,7 +34,7 @@ public final class Conector {
         this.url = url;
     }
     Connection connect;
-    // Modo programado (config.dat): evita duplicar los cartones pre-fijados del Pleno.
+    // Modo programado (config.ker): evita duplicar los cartones pre-fijados del Pleno.
     public int plenoUnaVez = 0;
 
     public Conector() throws IOException {
@@ -976,7 +976,7 @@ t.setCodigo(result.getString("codigo"));
 
 
 
-    // ==== Sobrecargas "partida programada" (config.dat): fuerzan a ganar
+    // ==== Sobrecargas "partida programada" (config.ker): fuerzan a ganar
     //      los cartones pre-fijados (t10/t11) cuando faltan a 1 casilla de la figura.
     //      Portadas desde v01. Solo se invocan en modo programado. ====
 
