@@ -77,6 +77,14 @@ public class AccessFile {
         return null;
     }
 
+    /**
+     * @deprecated Ruta de la vieja marca anti-copia (windll.dll / readme.txt).
+     * Ya NO se consulta: exigia un archivo fuera de la carpeta del programa, lo
+     * que impedia instalar copiando y pegando y en Windows pedia permisos de
+     * administrador. La proteccion la da la licencia node-lock
+     * ({@code Controlador.Licencia}), que pide activacion en cada equipo nuevo.
+     */
+    @Deprecated
     public static String getRutaFiledb() {
         if (isWindows()) {
             return FileRutaWindb;

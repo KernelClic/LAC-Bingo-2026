@@ -33,7 +33,7 @@ public final class Conector {
 
     public Conector() throws IOException {
         this.setUrl(AccessFile.getRutaFileDB() + "tablas.db");
-        if (!AccessFile.buscarFile(new File(AccessFile.getRutaFileDB() + "tablas.db")) || !AccessFile.buscarFile(new File(AccessFile.getRutaFiledb()))) {
+        if (!AccessFile.buscarFile(new File(AccessFile.getRutaFileDB() + "tablas.db"))) {
             System.out.print("Error de Conexion a Base de Datos");
             System.exit(0);
         }
