@@ -113,7 +113,7 @@ public final class Bingo {
     
      public Bingo() throws IOException {
         this.setUrl(AccesoAleatorio.getRutaFileDB() + "tablas.db");
-        if (!AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFileDB() + "tablas.db")) || !AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFiledb()))) {
+        if (!AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFileDB() + "tablas.db"))) {
             System.out.print("Error de Conexion a Base de Datos");
             System.exit(0);
         }
