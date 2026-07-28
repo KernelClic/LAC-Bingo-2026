@@ -47,20 +47,8 @@ public final class Conector {
      * y saltaba SQLITE_BUSY ("database is locked"). Compartiendo la conexion el
      * conflicto desaparece.
      */
-    private static Connection compartida;
-
-    /** Espera antes de rendirse si la base esta ocupada (ms). */
-    private static final int ESPERA_OCUPADA = 5000;
-
     private void abrirCompartida() throws SQLException {
-        if (compartida == null || compartida.isClosed()) {
-            compartida = DriverManager.getConnection("jdbc:sqlite:" + url);
-            // Ante un choque momentaneo, esperar en vez de fallar en seco.
-            try (Statement p = compartida.createStatement()) {
-                p.execute("PRAGMA busy_timeout = " + ESPERA_OCUPADA);
-            }
-        }
-        connect = compartida;
+        connect = ConexionBD.get(url);
     }
 
     public void connect() {
@@ -84,15 +72,8 @@ public final class Conector {
      * para TODAS las pestañas; solo tiene sentido al terminar el programa.
      */
     public void close() {
-        try {
-            if (compartida != null && !compartida.isClosed()) {
-                compartida.close();
-            }
-            compartida = null;
-            connect = null;
-        } catch (SQLException ex) {
-            Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ConexionBD.cerrar();
+        connect = null;
     }
 
     /**

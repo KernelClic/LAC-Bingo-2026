@@ -125,6 +125,15 @@ public final class Bingo {
 
     public void connect() {
         try {
+            // MISMA conexion que usa Conector: SQLite admite un solo escritor y
+            // dos conexiones del mismo proceso se bloquean entre si.
+            connect = ConexionBD.get(url);
+            if (true) return;
+        } catch (SQLException ex) {
+            System.err.println("No se ha podido conectar a la base de datos\n" + ex.getMessage());
+            return;
+        }
+        try {
             connect = DriverManager.getConnection("jdbc:sqlite:" + url);
             if (connect != null) {
                 /*          
@@ -213,11 +222,8 @@ public final class Bingo {
     }
 
     public void close() {
-        try {
-            connect.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Conector.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ConexionBD.cerrar();
+        connect = null;
     }
 
     public Boolean autenticar(String app, String pass) throws SQLException, IOException, ParseException {
@@ -228,25 +234,23 @@ public final class Bingo {
 
         String sql = "SELECT app, codigo FROM Bingo WHERE trim(app) = trim(?) and trim(codigo) = trim(?);";
 
-        ResultSet result = null;
-        PreparedStatement st = connect.prepareStatement(sql);
+        try (PreparedStatement st = connect.prepareStatement(sql)) {
+            st.setString(1, appCifrado);
+            st.setString(2, passCifrado);
+            try (ResultSet result = st.executeQuery()) {
 
-        st.setString(1, appCifrado);
-        st.setString(2, passCifrado);
-
-        result = st.executeQuery();
-
-        while (result.next()) {
-            if (result.getString("app").equals(appCifrado)) {
-                if (result.getString("codigo").equals(passCifrado) 
-                        && validarLicencia(app)) {
-                    Login = true;
+                while (result.next()) {
+                    if (result.getString("app").equals(appCifrado)) {
+                        if (result.getString("codigo").equals(passCifrado) 
+                                && validarLicencia(app)) {
+                            Login = true;
+                        }
+                    }
                 }
+
+                return Login;
             }
         }
-
-        return Login;
-
     }
 
     public void actualizarPassword(String app, String pass, String newpass) throws SQLException, IOException, ParseException {
@@ -334,83 +338,85 @@ public final class Bingo {
         String sql = "SELECT tlim, flim, plim, glim, rlim, clim, pact, gact, ract, cact "
                 + "FROM Licencia ;";
 
-        ResultSet result = null;
-        PreparedStatement st = connect.prepareStatement(sql);
-        result = st.executeQuery();
+        // try-with-resources: los returns internos cerraban el cursor NUNCA, y
+        // ese lock de lectura bloqueaba el borrado de tablas (SQLITE_BUSY).
+        try (PreparedStatement st = connect.prepareStatement(sql);
+             ResultSet result = st.executeQuery()) {
        
-        if (result.getString("tlim").equals("*") && result.getString("flim").equals("01/01/9999")) {
-            return true;
-        } else {
-            if (result.getString("tlim").equals("-")) {
+            if (result.getString("tlim").equals("*") && result.getString("flim").equals("01/01/9999")) {
+                return true;
+            } else {
+                if (result.getString("tlim").equals("-")) {
 
-                String _tlim = result.getString("tlim");
-                String _flim = result.getString("flim");
-                String _plim = result.getString("plim");
-                String _glim = result.getString("glim");
-                String _rlim = result.getString("rlim");
-                String _clim = result.getString("clim");
+                    String _tlim = result.getString("tlim");
+                    String _flim = result.getString("flim");
+                    String _plim = result.getString("plim");
+                    String _glim = result.getString("glim");
+                    String _rlim = result.getString("rlim");
+                    String _clim = result.getString("clim");
 
-                int _pact = result.getInt("pact");
-                int _gact = result.getInt("gact");
-                int _ract = result.getInt("ract");
-                int _cact = result.getInt("cact");
+                    int _pact = result.getInt("pact");
+                    int _gact = result.getInt("gact");
+                    int _ract = result.getInt("ract");
+                    int _cact = result.getInt("cact");
 
-                // validamos fecha 
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                Date fecHoy = new Date();
+                    // validamos fecha 
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    Date fecHoy = new Date();
 
-                Date fecLic = formato.parse(result.getString("flim"));
+                    Date fecLic = formato.parse(result.getString("flim"));
 
-                if (fecHoy.after(fecLic)) {
-                    Estado = false;
-                }
+                    if (fecHoy.after(fecLic)) {
+                        Estado = false;
+                    }
 
-                // validamos Pantalla
-                if (result.getInt("pact") < Integer.parseInt(result.getString("plim")) && app.equals("Pantalla")) {
-                    // incrementamos el pact 
-                    _pact ++;
-                    Estado = true;
-                }
+                    // validamos Pantalla
+                    if (result.getInt("pact") < Integer.parseInt(result.getString("plim")) && app.equals("Pantalla")) {
+                        // incrementamos el pact 
+                        _pact ++;
+                        Estado = true;
+                    }
 
-                // validamos Generador
-                if (result.getInt("gact") < Integer.parseInt(result.getString("glim")) && app.equals("Generador")) {
-                    // incrementamos el gact 
-                    _gact ++;
-                    Estado = true;                    
-                }
+                    // validamos Generador
+                    if (result.getInt("gact") < Integer.parseInt(result.getString("glim")) && app.equals("Generador")) {
+                        // incrementamos el gact 
+                        _gact ++;
+                        Estado = true;                    
+                    }
 
-                // validamos Reporte
-                if (result.getInt("ract") < Integer.parseInt(result.getString("rlim")) && app.equals("Reporte")) {
-                    // incrementamos el ract 
-                    _ract++;
-                    Estado = true;                    
-                }
+                    // validamos Reporte
+                    if (result.getInt("ract") < Integer.parseInt(result.getString("rlim")) && app.equals("Reporte")) {
+                        // incrementamos el ract 
+                        _ract++;
+                        Estado = true;                    
+                    }
 
-                // validamos Configurar
-                if (result.getInt("cact") < Integer.parseInt(result.getString("clim")) && app.equals("Configurar")) {
-                    // incrementamos el cact 
-                    _cact++;
-                    Estado = true;                    
-                }
+                    // validamos Configurar
+                    if (result.getInt("cact") < Integer.parseInt(result.getString("clim")) && app.equals("Configurar")) {
+                        // incrementamos el cact 
+                        _cact++;
+                        Estado = true;                    
+                    }
                 
-                // validamos Configurar
-                if (app.equals("Licencia")) {
-                    // incrementamos el cact 
-                    Estado = true;                    
-                }
+                    // validamos Configurar
+                    if (app.equals("Licencia")) {
+                        // incrementamos el cact 
+                        Estado = true;                    
+                    }
                 
-                actualizarLicencia (_tlim, _flim, 
-                                    _plim, _glim, _rlim, _clim,
-                                    _pact, _gact, _ract, _cact);
+                    actualizarLicencia (_tlim, _flim, 
+                                        _plim, _glim, _rlim, _clim,
+                                        _pact, _gact, _ract, _cact);
 
-                return Estado;
+                    return Estado;
+
+                }
 
             }
 
+            return false;
+
         }
-
-        return false;
-
     }
 
 }
