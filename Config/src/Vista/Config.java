@@ -107,7 +107,7 @@ public class Config extends javax.swing.JFrame {
 
         engancharCreacionPreferencias();
 
-        setTitle("Configuración Universal — KernelClic");
+        setTitle("Configuración Universal");
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setContentPane(tabs);
         pack();
