@@ -79,7 +79,7 @@ public class Tabla implements Serializable {
         n25=0;
         codigo = "";
         
-        if (!AccesoAleatorio.buscarFile(new File (AccesoAleatorio.getRutaFileDB()+"tablas.db")) || !AccesoAleatorio.buscarFile(new File (AccesoAleatorio.getRutaFiledb()))) {
+        if (!AccesoAleatorio.buscarFile(new File (AccesoAleatorio.getRutaFileDB()+"tablas.db"))) {
             System.out.print("Error de Conexion a Base de Datos");
             System.exit(0);
         }
