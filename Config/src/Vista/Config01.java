@@ -190,7 +190,7 @@ public class Config01 extends javax.swing.JFrame {
         for (i = 0; i < MAXBINGO; i++) {
             bingo_w[i] = 0;
         }
-        if (!AccessFile.buscarFile(new File(AccessFile.getRutaFileDB() + "tablas.db")) || !AccessFile.buscarFile(new File(AccessFile.getRutaFiledb()))
+        if (!AccessFile.buscarFile(new File(AccessFile.getRutaFileDB() + "tablas.db"))
                 // ||!AccessFile.validarLic(new File(AccessFile.getRutaFileDb()),"C")
                 ) {
             System.out.print("Error de Conexion a Base de Datos");

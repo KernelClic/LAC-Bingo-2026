@@ -112,8 +112,7 @@ public class Config03 extends javax.swing.JFrame {
         for ( j=0; j<MAXBINGO+1; j++ )
         Tablas[i][j]=0;
         */
-        if (!AccessFile.buscarFile(new File(AccessFile.getRutaFileDB() + "tablas.db")) ||
-                !AccessFile.buscarFile(new File(AccessFile.getRutaFiledb()) )
+        if (!AccessFile.buscarFile(new File(AccessFile.getRutaFileDB() + "tablas.db"))
                 //|| !AccessFile.validarLic(new File(AccessFile.getRutaFileDb()),"L")
                 ) {
             System.out.print("Error de Conexion a Base de Datos");
