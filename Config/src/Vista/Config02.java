@@ -65,24 +65,26 @@ public class Config02 extends javax.swing.JFrame {
 
     private void rangoTablas() throws SQLException, IOException {
         //Tabla t = new Tabla();
-        ResultSet r = null;
-        r = con.cargarTablas();
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.setColumnIdentifiers(new Object[]{"No. Tabla", "Codigo"});
+        // El ResultSet se cierra SIEMPRE: mientras viva mantiene un lock de
+        // lectura en SQLite que bloquea el borrado de tablas (SQLITE_BUSY).
+        try (ResultSet r = con.cargarTablas()) {
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.setColumnIdentifiers(new Object[]{"No. Tabla", "Codigo"});
 
-        DefaultTableModel mod2 = (DefaultTableModel) jTablasE.getModel();
-        mod2.setColumnIdentifiers(new Object[]{"No. Tabla", "Codigo"});
+            DefaultTableModel mod2 = (DefaultTableModel) jTablasE.getModel();
+            mod2.setColumnIdentifiers(new Object[]{"No. Tabla", "Codigo"});
 
-        while (r.next()) {
-            /*t.setNumTabla(r.getInt("numTabla"));
-                t.setCodigo(r.getString("codigo"));
-             */
-            modelo.addRow(new Object[]{r.getInt("numTabla"), r.getString("codigo")});
-            jTablas.setModel(modelo);
+            while (r.next()) {
+                /*t.setNumTabla(r.getInt("numTabla"));
+                    t.setCodigo(r.getString("codigo"));
+                 */
+                modelo.addRow(new Object[]{r.getInt("numTabla"), r.getString("codigo")});
+                jTablas.setModel(modelo);
+
+            }
+            jTablasE.removeAll();
 
         }
-        jTablasE.removeAll();
-
     }
 
     private void configuracionInicial() throws IOException {
