@@ -28,19 +28,25 @@ for a in reporte-universal config figura-archivo; do
 done
 ```
 
-## La familia config y su excepcion
+## El configurador: una sola rama
 
-`config/base` cascadea hacia `config/01`, `config/02` y `config/03`, que son
-variantes del MISMO formulario (`Vista/Config.java`). Los merges suelen chocar
-en ese archivo porque cada variante decide a proposito que registros escribe en
-`config.dat`; se resuelven **conservando el lado de la variante** y tomando de
-la base solo lo que sea genuinamente comun.
+`config/universal` es la UNICA rama del configurador. Su cascada es
+`main -> config/universal`; no tiene base propia ni variantes.
 
-`config/universal` NO entra en esa cascada. Alli `Vista/Config.java` es otro
-archivo — el caparazon del `JTabbedPane` que reparenta a Config01/02/03 — asi
-que mergear `config/base` mezcla dos cosas sin relacion. Su cascada valida es
-`main -> config/universal`, y un cambio de la base se porta a mano cuando
-aplique (normalmente va en `Config01/02/03.java`, no en `Config.java`).
+Las variantes sueltas `config/base`, `config/01`, `config/02` y `config/03`
+**se retiraron el 2026-07-27**: las tres ultimas habian adoptado el arbol del
+unificado y eran identicas entre si, y `config/base` era el formulario previo,
+anterior a la unificacion en `config.ker` (desplegarla hoy romperia ese archivo).
+Su historia quedo en los tags `archivo/config-01`, `-02`, `-03` y `-base`:
+
+```
+git switch -c revisar-config-01 archivo/config-01     # si alguna vez hace falta
+```
+
+Dentro de `config/universal`, las tres variantes viven como pestañas
+(`Vista/Config01.java`, `Config02.java`, `Config03.java`) que arma el
+`JTabbedPane` de `Vista/Config.java`; un cambio a una variante se hace en su
+archivo, no en una rama aparte.
 
 ## Subir un fix generico descubierto en una variante
 ```
