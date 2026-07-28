@@ -786,6 +786,16 @@ t.setCodigo(result.getString("codigo"));
         return vtablasWin;
     }
 
+    /**
+     * true si la tabla pre-fijada esta realmente configurada. Sin esta
+     * comprobacion se anunciaba como ganadora la casilla vacia y en la ventana
+     * de ganadores aparecia un "-1" fantasma.
+     */
+    private static boolean esTablaPrefijada(String t) {
+        return t != null && !t.trim().isEmpty()
+                && !t.equalsIgnoreCase("-1") && !t.equalsIgnoreCase("N/A");
+    }
+
     public int[] getVectorBingo(ResultSet rst) throws SQLException {
         int ret[] = new int[25];
 
@@ -1022,8 +1032,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 24) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1") && !t10.equalsIgnoreCase("N/A")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1") && !t11.equalsIgnoreCase("N/A")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Pleno", t11));
+                }
             }
 
             i = 0;
@@ -1068,8 +1082,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 7) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra T", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra T", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra T", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra T", t11));
+                }
             }
 
             i = 0;
@@ -1115,8 +1133,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 8) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L", t11));
+                }
             }
 
             i = 0;
@@ -1162,8 +1184,12 @@ t.setCodigo(result.getString("codigo"));
             
             
             if ((i == 7) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra X", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra X", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra X", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra X", t11));
+                }
             }
 
             
@@ -1218,8 +1244,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 15) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra O", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra O", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra O", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra O", t11));
+                }
             }
 
             i = 0;
@@ -1269,8 +1299,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 11) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra N", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra N", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra N", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra N", t11));
+                }
             }
 
             i = 0;
@@ -1321,8 +1355,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 12) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra C", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra C", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra C", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra C", t11));
+                }
             }
 
             i = 0;
@@ -1373,8 +1411,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 11) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra H", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra H", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra H", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra H", t11));
+                }
             }
 
             i = 0;
@@ -1425,8 +1467,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 11) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra I", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra I", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra I", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra I", t11));
+                }
             }
 
             i = 0;
@@ -1476,8 +1522,12 @@ t.setCodigo(result.getString("codigo"));
             }
                         
             if ((i == 11) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Z", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Z", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Z", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Z", t11));
+                }
             }
 
             
@@ -1524,8 +1574,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 8) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L Invertida", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L Invertida", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L Invertida", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra L Invertida", t11));
+                }
             }
 
             i = 0;
@@ -1578,8 +1632,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 15) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra S", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra S", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra S", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra S", t11));
+                }
             }
 
             i = 0;
@@ -1630,8 +1688,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 13) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra E", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra E", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra E", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra E", t11));
+                }
             }
 
             i = 0;
@@ -1673,8 +1735,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 4) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Casita", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Casita", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Casita", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Casita", t11));
+                }
             }
 
             i = 0;
@@ -1721,8 +1787,12 @@ t.setCodigo(result.getString("codigo"));
             }
                 
             if ((i == 7) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Cuadrado", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Cuadrado", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Cuadrado", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra Cuadrado", t11));
+                }
             }
             
             
@@ -1774,8 +1844,12 @@ t.setCodigo(result.getString("codigo"));
             }
 
             if ((i == 12) && ((!t10.isEmpty() && !t10.equalsIgnoreCase("-1")) || (!t11.isEmpty() && !t11.equalsIgnoreCase("-1")))) {
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra U Grande", t10));
-                vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra U Grande", t11));
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra U Grande", t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(t.getNumTabla(), "Letra U Grande", t11));
+                }
             }
 
             i = 0;
