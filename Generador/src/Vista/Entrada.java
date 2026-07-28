@@ -139,7 +139,7 @@ public class Entrada extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        // Modo interno de KernelClic: generador de claves (lanzar con --keygen).
+        // Modo interno del Administrador del Sistema: generador de claves (lanzar con --keygen).
         for (String a : args) {
             if ("--keygen".equalsIgnoreCase(a)) {
                 java.awt.EventQueue.invokeLater(new Runnable() {
@@ -206,14 +206,14 @@ public class Entrada extends javax.swing.JFrame {
             c.fill = java.awt.GridBagConstraints.HORIZONTAL;
             c.gridx = 0; c.gridy = 0; c.gridwidth = 2;
             panel.add(new javax.swing.JLabel("<html>Este equipo no está activado.<br>"
-                    + "Entregue el <b>ID de equipo</b> a KernelClic para obtener su clave.</html>"), c);
+                    + "Entregue el <b>ID de equipo</b> al Administrador del Sistema para obtener su clave.</html>"), c);
             c.gridwidth = 1;
             c.gridx = 0; c.gridy = 1; panel.add(new javax.swing.JLabel("ID de equipo:"), c);
             c.gridx = 1; c.gridy = 1; panel.add(tfId, c);
             c.gridx = 0; c.gridy = 2; panel.add(new javax.swing.JLabel("Clave de activación:"), c);
             c.gridx = 1; c.gridy = 2; panel.add(tfClave, c);
             int opcion = javax.swing.JOptionPane.showConfirmDialog(null, panel,
-                    "Activación del aplicativo — KernelClic",
+                    "Activación del aplicativo",
                     javax.swing.JOptionPane.OK_CANCEL_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE);
             if (opcion != javax.swing.JOptionPane.OK_OPTION) return false;
             if (Licencia.activar(tfClave.getText())) {
@@ -248,7 +248,7 @@ public class Entrada extends javax.swing.JFrame {
         c.gridx = 1; c.gridy = 1; panel.add(btnGen, c);
         c.gridx = 0; c.gridy = 2; panel.add(new javax.swing.JLabel("Clave de activación:"), c);
         c.gridx = 1; c.gridy = 2; panel.add(tfClave, c);
-        javax.swing.JFrame f = new javax.swing.JFrame("Generador de Claves — KernelClic (uso interno)");
+        javax.swing.JFrame f = new javax.swing.JFrame("Generador de Claves (uso interno)");
         f.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         f.add(panel);
         f.pack();

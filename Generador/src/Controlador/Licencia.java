@@ -17,14 +17,14 @@ import java.util.List;
  * <p>El aplicativo solo se ejecuta en un computador donde exista una clave de
  * activación válida, previamente instalada. La clave se deriva de una huella
  * única del equipo (dirección MAC + nombre del equipo) combinada con un secreto
- * que solo conoce KernelClic, por lo que copiar el archivo de licencia a otro
+ * que solo conoce el Administrador del Sistema, por lo que copiar el archivo de licencia a otro
  * computador no funciona: cada equipo tiene una huella —y por tanto una clave—
  * distinta.</p>
  *
  * <p>Flujo:</p>
  * <ol>
  *   <li>El equipo expone un <b>ID de equipo</b> ({@link #idEquipo()}).</li>
- *   <li>KernelClic genera la clave a partir de ese ID con el secreto
+ *   <li>El Administrador del Sistema genera la clave a partir de ese ID con el secreto
  *       ({@link #generarClaveDesdeId(String)}).</li>
  *   <li>El cliente ingresa la clave; si coincide con la esperada, se guarda
  *       cifrada-por-derivación en {@code licencia.lic} junto a la base de datos.</li>
@@ -35,7 +35,7 @@ import java.util.List;
  */
 public final class Licencia {
 
-    /** Secreto compartido — solo lo conoce KernelClic. Eleva el nivel de seguridad. */
+    /** Secreto compartido — solo lo conoce el Administrador del Sistema. Eleva el nivel de seguridad. */
     private static final String SECRETO = "K3rnelCl1c::LAC-Bingo::2025::#n0d3-l0ck$";
 
     /** Nombre del archivo de licencia, guardado junto a la base de datos. */
@@ -54,7 +54,7 @@ public final class Licencia {
 
     /**
      * ID legible del equipo, derivado de la huella de hardware
-     * (MAC + nombre del equipo). Es lo que el cliente reporta a KernelClic.
+     * (MAC + nombre del equipo). Es lo que el cliente reporta al Administrador del Sistema.
      */
     public static String idEquipo() {
         String hash = sha256Hex(huellaEquipo());
@@ -68,7 +68,7 @@ public final class Licencia {
 
     /**
      * Genera la clave de activación a partir de un ID de equipo dado.
-     * Usado tanto por la validación local como por el generador interno de KernelClic.
+     * Usado tanto por la validación local como por el generador interno del Administrador del Sistema.
      */
     public static String generarClaveDesdeId(String id) {
         String norm = (id == null ? "" : id.trim().toUpperCase());
