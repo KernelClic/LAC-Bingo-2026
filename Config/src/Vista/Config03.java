@@ -1136,7 +1136,17 @@ public class Config03 extends javax.swing.JFrame {
     private void btnGenerar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerar1ActionPerformed
         try {
             // TODO add your handling code here:
-            AccessFile.cargarPartida();        
+            AccessFile.cargarPartida();
+
+            // Sin partida guardada no hay nada que cargar: avisar en vez de
+            // reventar con NullPointerException al leer un registro ausente.
+            if (AccessFile.getNumeroRegistros() == 0) {
+                JOptionPane.showMessageDialog(this,
+                        "No hay una partida guardada todavia.\n"
+                        + "Configure los valores y presione Generar para crearla.",
+                        "Sin configuracion", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
             
             Configuracion conf1 = AccessFile.getConf(AccessFile.buscarRegistro(1));          
             /*nroBalotasPleno.setText(Integer.toString(conf3.getIntento()));

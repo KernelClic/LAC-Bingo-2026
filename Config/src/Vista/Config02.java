@@ -381,6 +381,16 @@ public class Config02 extends javax.swing.JFrame {
             // TODO add your handling code here:
             AccessFile.cargarPartida();
 
+            // Sin partida guardada no hay nada que cargar: avisar en vez de
+            // reventar con NullPointerException al leer un registro ausente.
+            if (AccessFile.getNumeroRegistros() == 0) {
+                JOptionPane.showMessageDialog(this,
+                        "No hay una partida guardada todavia.\n"
+                        + "Configure los valores y presione Generar para crearla.",
+                        "Sin configuracion", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
 
             Configuracion conf2 = AccessFile.getConf(AccessFile.buscarRegistro(2));
             txtTabla04.setText(conf2.getTabla1());
