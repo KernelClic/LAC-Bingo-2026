@@ -69,9 +69,7 @@ public class ReporteUniversal extends JFrame {
     public ReporteUniversal() throws IOException {
         super("Bingo — Reporte Universal");
         if (!AccesoAleatorio.buscarFile(
-                new File(AccesoAleatorio.getRutaFileDB() + "tablas.db"))
-            || !AccesoAleatorio.buscarFile(
-                new File(AccesoAleatorio.getRutaFiledb()))) {
+                new File(AccesoAleatorio.getRutaFileDB() + "tablas.db"))) {
             JOptionPane.showMessageDialog(null,
                     "Error de conexión a base de datos.", "Error",
                     JOptionPane.ERROR_MESSAGE);

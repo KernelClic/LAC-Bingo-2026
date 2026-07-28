@@ -32,7 +32,7 @@ public class Reporte extends javax.swing.JFrame {
     public Reporte() throws IOException {
         initComponents();
         this.setLocationRelativeTo(null);
-        if (!AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFileDB() + "tablas.db")) || !AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFiledb()))) {
+        if (!AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFileDB() + "tablas.db"))) {
             AccesoAleatorio.getLicencia();
             System.out.print("Error de Conexion a Base de Datos");
             System.exit(0);
