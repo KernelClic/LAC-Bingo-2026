@@ -100,7 +100,7 @@ public final class Pantalla extends javax.swing.JFrame {
     public static void main(String args[]) throws IOException {
         /* Create and display the form */
 
-        if (!AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFileDB() + "tablas.db")) || !AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFiledb()))) {
+        if (!AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFileDB() + "tablas.db"))) {
             System.out.print("Error de Conexion a Base de Datos");
             System.exit(0);
         }
@@ -157,7 +157,7 @@ public final class Pantalla extends javax.swing.JFrame {
             nombresFiguras = new java.util.ArrayList<>();
             nombresMostrar = new java.util.ArrayList<>();
         }
-        if (!AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFileDB() + "tablas.db")) || !AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFiledb()))) {
+        if (!AccesoAleatorio.buscarFile(new File(AccesoAleatorio.getRutaFileDB() + "tablas.db"))) {
             System.out.print("Error de Conexion a Base de Datos");
             System.exit(0);
         }
