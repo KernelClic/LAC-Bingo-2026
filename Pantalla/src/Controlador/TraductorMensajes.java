@@ -30,7 +30,7 @@ import java.util.Map;
  * - Si falta una clave o su valor está vacío, se muestra el nombre interno tal
  *   cual (nunca se pierde el mensaje).
  *
- * @author KernelClic
+ * @author Administrador del Sistema
  */
 public final class TraductorMensajes {
 
