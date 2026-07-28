@@ -141,9 +141,14 @@ public class AccessFile {
         cargarPartida();
     }
 
-    /** Ya no hay flujo abierto; se conserva porque los llamadores la invocan. */
+    /**
+     * Ya no hay flujo que cerrar: cada cambio se vuelca en el acto, asi que aqui
+     * no hay nada que escribir. Se conserva porque los llamadores la invocan, y
+     * a proposito NO graba: la Pantalla la llama despues de leer la partida, y
+     * un lector no debe reescribir el archivo.
+     */
     public static void cerrar() throws IOException {
-        volcar();
+        // sin efecto
     }
 
     public static int getNumeroRegistros() {
