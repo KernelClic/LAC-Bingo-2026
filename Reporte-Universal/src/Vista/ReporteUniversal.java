@@ -619,7 +619,7 @@ public class ReporteUniversal extends JFrame {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
         catch (Exception ignored) {}
 
-        // Modo interno de KernelClic: generador de claves a partir de un ID de equipo.
+        // Modo interno del Administrador del Sistema: generador de claves a partir de un ID de equipo.
         boolean keygen = false;
         for (String a : args) if ("--keygen".equalsIgnoreCase(a)) keygen = true;
         if (keygen) {
@@ -668,7 +668,7 @@ public class ReporteUniversal extends JFrame {
 
             c.gridx = 0; c.gridy = 0; c.gridwidth = 2;
             panel.add(new JLabel("<html>Este equipo no está activado.<br>"
-                    + "Entregue el <b>ID de equipo</b> a KernelClic para obtener su clave.</html>"), c);
+                    + "Entregue el <b>ID de equipo</b> al Administrador del Sistema para obtener su clave.</html>"), c);
             c.gridwidth = 1;
             c.gridx = 0; c.gridy = 1; panel.add(new JLabel("ID de equipo:"), c);
             c.gridx = 1; c.gridy = 1; panel.add(tfId, c);
@@ -676,7 +676,7 @@ public class ReporteUniversal extends JFrame {
             c.gridx = 1; c.gridy = 2; panel.add(tfClave, c);
 
             int opcion = JOptionPane.showConfirmDialog(null, panel,
-                    "Activación del aplicativo — KernelClic",
+                    "Activación del aplicativo",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
             if (opcion != JOptionPane.OK_OPTION) return false; // canceló → no se ejecuta
@@ -694,7 +694,7 @@ public class ReporteUniversal extends JFrame {
     }
 
     /**
-     * Herramienta interna de KernelClic (lanzar con argumento {@code --keygen}):
+     * Herramienta interna del Administrador del Sistema (lanzar con argumento {@code --keygen}):
      * recibe el ID de equipo del cliente y devuelve la clave de activación.
      */
     private static void mostrarGeneradorClave() {
@@ -716,7 +716,7 @@ public class ReporteUniversal extends JFrame {
         c.gridx = 0; c.gridy = 2; panel.add(new JLabel("Clave de activación:"), c);
         c.gridx = 1; c.gridy = 2; panel.add(tfClave, c);
 
-        JFrame f = new JFrame("Generador de Claves — KernelClic (uso interno)");
+        JFrame f = new JFrame("Generador de Claves (uso interno)");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.add(panel);
         f.pack();
