@@ -46,6 +46,9 @@ public class Config extends javax.swing.JFrame {
     /** Pestaña propia de esta ventana (no viene de ninguna variante). */
     private Mantenimiento mantenimiento;
 
+    /** Pestaña de figuras, generada desde matriz.txt (no del formulario). */
+    private FigurasDinamicas figuras;
+
     private Preferencias prefs;
 
     public Config() throws IOException, SQLException {
@@ -72,6 +75,7 @@ public class Config extends javax.swing.JFrame {
                 aplicarModulos();
             }
         });
+        figuras = new FigurasDinamicas(prefs);
         aplicarModulos();
 
         // Gesto oculto: Ctrl+Shift+DobleClic sobre la tira de pestañas abre la
@@ -212,6 +216,9 @@ public class Config extends javax.swing.JFrame {
         }
         if (rangos != null && modulos.contains(Preferencias.MODULO_RANGOS)) {
             tabs.addTab(TAB_RANGOS, rangos);
+        }
+        if (modulos.contains(Preferencias.MODULO_FIGURAS)) {
+            tabs.addTab("Figuras (todas)", figuras);
         }
         if (modulos.contains(Preferencias.MODULO_MANTENIMIENTO)) {
             mantenimiento.refrescarEstado();

@@ -38,6 +38,7 @@ public class OpcionesConfig extends JDialog {
     private final JCheckBox ch03 = new JCheckBox("03 · Figuras / Letras (completo)");
     private final JCheckBox chRG = new JCheckBox("Rangos de Tablas");
     private final JCheckBox chMT = new JCheckBox("Mantenimiento (eliminar config.ker)");
+    private final JCheckBox chFG = new JCheckBox("Figuras (todas, desde matriz.txt)");
 
     private boolean aceptado = false;
 
@@ -69,6 +70,7 @@ public class OpcionesConfig extends JDialog {
         opciones.add(ch03);
         opciones.add(chRG);
         opciones.add(chMT);
+        opciones.add(chFG);
 
         marcarSegunPreferencias();
 
@@ -119,6 +121,7 @@ public class OpcionesConfig extends JDialog {
         ch03.setSelected(prefs.tieneModulo(Preferencias.MODULO_03));
         chRG.setSelected(prefs.tieneModulo(Preferencias.MODULO_RANGOS));
         chMT.setSelected(prefs.tieneModulo(Preferencias.MODULO_MANTENIMIENTO));
+        chFG.setSelected(prefs.tieneModulo(Preferencias.MODULO_FIGURAS));
     }
 
     private void guardar() {
@@ -137,6 +140,9 @@ public class OpcionesConfig extends JDialog {
         }
         if (chMT.isSelected()) {
             elegidos.add(Preferencias.MODULO_MANTENIMIENTO);
+        }
+        if (chFG.isSelected()) {
+            elegidos.add(Preferencias.MODULO_FIGURAS);
         }
 
         if (elegidos.isEmpty()) {
