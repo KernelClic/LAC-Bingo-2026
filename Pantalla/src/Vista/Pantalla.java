@@ -49,6 +49,7 @@ public final class Pantalla extends javax.swing.JFrame {
     private Vector vImagenes;
     private java.util.List<String> matrices;   // patrones cargados de matriz.txt
     private java.util.List<String> nombresFiguras;              // nombre interno de cada figura
+    private Controlador.Preferencias prefsFiguras;              // config por figura (esquema nuevo)
     private java.util.List<String> nombresMostrar;              // traduccion/nombre a mostrar
     private java.util.List<javax.swing.JCheckBox> figChecks;    // seleccion por figura
     private javax.swing.JPanel figLista;                        // contenedor de las casillas
@@ -151,6 +152,7 @@ public final class Pantalla extends javax.swing.JFrame {
         try {
             matrices = con.obtenerImagenesPredisenadas();
             nombresFiguras = con.getNombresFiguras();
+            prefsFiguras = new Controlador.Preferencias();
             nombresMostrar = con.getNombresMostrar();
         } catch (Exception ex) {
             matrices = new java.util.ArrayList<>();
@@ -245,6 +247,64 @@ public final class Pantalla extends javax.swing.JFrame {
         try { panelConfiguracion.remove(jPanel4); } catch (Exception ignore) {}
         panelConfiguracion.insertTab("Figuras", null, cont, "Figuras a jugar", 1);
         panelConfiguracion.setSelectedIndex(1);
+    }
+
+    /**
+     * Tablas premiadas al COMPLETARSE la figura (esquema dinamico). Si no hay
+     * configuracion por figura se cae al registro 2 del esquema viejo, que solo
+     * aplicaba al Pleno.
+     */
+    private String[] completaDeFigura(String nombreInterno) {
+        if (prefsFiguras != null && prefsFiguras.hayFigurasConfiguradas()) {
+            return prefsFiguras.getCompletaFigura(nombreInterno);
+        }
+        if (nombreInterno != null && nombreInterno.trim().equalsIgnoreCase("pleno")) {
+            return new String[]{pT01, pT02, pT03};
+        }
+        return new String[]{"-1", "-1", "-1"};
+    }
+
+    /**
+     * Tablas pre-fijadas que corresponden a una figura de matriz.txt, buscadas
+     * por su NOMBRE INTERNO contra las 16 ranuras que configura el Config
+     * (registros 3..18 de config.ker -> SetConfigLetra 1..16).
+     *
+     * Las figuras de matriz.txt sin ranura equivalente (Cruz Pequeña, Cruz
+     * Grande, Cuatro Esquinas, Diagonales, Punta de Flecha, Vertical/Horizontal
+     * Central y U Pequeña) no tienen donde configurarse hoy: devuelven "-1" y
+     * se juegan sin amaño.
+     *
+     * @return {t10, t11} de esa figura, o {"-1","-1"} si no aplica.
+     */
+    private String[] prefijadasDeFigura(String nombreInterno) {
+        if (nombreInterno == null) {
+            return new String[]{"-1", "-1"};
+        }
+        // Esquema NUEVO (dinamico): la configuracion se guarda por NOMBRE de
+        // figura, asi que sirve para todas las de matriz.txt, no solo 16.
+        if (prefsFiguras != null && prefsFiguras.hayFigurasConfiguradas()) {
+            return prefsFiguras.getTablasFigura(nombreInterno);
+        }
+        // Esquema VIEJO (posicional): registros 3..18 de la partida. Se conserva
+        // para que las configuraciones ya guardadas sigan funcionando.
+        String n = nombreInterno.trim().toLowerCase();
+        if (n.equals("pleno"))              return new String[]{codTabla10, codTabla11};
+        if (n.equals("letra u grande"))     return new String[]{codTabla20, codTabla21};
+        if (n.equals("letra t"))            return new String[]{codTabla30, codTabla31};
+        if (n.equals("letra l"))            return new String[]{codTabla40, codTabla41};
+        if (n.equals("letra x"))            return new String[]{codTabla50, codTabla51};
+        if (n.equals("letra z"))            return new String[]{codTabla60, codTabla61};
+        if (n.equals("letra o"))            return new String[]{codTabla70, codTabla71};
+        if (n.equals("letra n"))            return new String[]{codTabla80, codTabla81};
+        if (n.equals("letra c"))            return new String[]{codTabla90, codTabla91};
+        if (n.equals("letra h"))            return new String[]{codTabla100, codTabla101};
+        if (n.equals("letra i"))            return new String[]{codTabla110, codTabla111};
+        if (n.equals("letra s"))            return new String[]{codTabla120, codTabla121};
+        if (n.equals("letra e"))            return new String[]{codTabla130, codTabla131};
+        if (n.equals("letra l invertida"))  return new String[]{codTabla140, codTabla141};
+        if (n.equals("letra cuadrado"))     return new String[]{codTabla150, codTabla151};
+        if (n.equals("letra casita"))       return new String[]{codTabla160, codTabla161};
+        return new String[]{"-1", "-1"};
     }
 
     /** (Re)construye la lista de casillas del tab Figuras desde matrices/nombresFiguras. */
@@ -4046,7 +4106,15 @@ public final class Pantalla extends javax.swing.JFrame {
                     String nombreFig = nombreMostrarFigura(fi);
                     if (buscarGanadores(ganadores, nombreFig)) continue;
                     java.util.List<Integer> posiciones = posicionesDeMatriz(matrices.get(fi));
-                    if ((tmpGanadores = con.verificarArchivo(vBingo, posiciones, nombreFig)).size() != 0) {
+                    String nombreInterno = (nombresFiguras != null && fi < nombresFiguras.size())
+                            ? nombresFiguras.get(fi) : null;
+                    String[] pref = modoProgramado
+                            ? prefijadasDeFigura(nombreInterno)
+                            : new String[]{"-1", "-1"};
+                    String[] compl = modoProgramado ? completaDeFigura(nombreInterno) : null;
+                    if ((tmpGanadores = modoProgramado
+                            ? con.verificarArchivo(vBingo, posiciones, nombreFig, pref[0], pref[1], compl)
+                            : con.verificarArchivo(vBingo, posiciones, nombreFig)).size() != 0) {
                         unirGanadores(ganadores, tmpGanadores);
                         nuevoGanadorArchivo = true;
                     }
