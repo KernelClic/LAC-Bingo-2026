@@ -50,9 +50,12 @@ public final class Conector {
                 Statement enunciado;
                 enunciado = connect.createStatement();
 
-                // CREAR UNA TABLA NUEVA, LA BORRA SI EXISTE
-                enunciado.execute("DROP TABLE IF EXISTS Tablas;");
-                enunciado.execute("CREATE TABLE Tablas (numTabla int primary key, activo int, "
+                // Se crea la tabla SOLO si no existe. Antes hacia
+                // "DROP TABLE IF EXISTS Tablas" primero, de modo que abrir el
+                // programa borraba todos los cartones sin avisar. El borrado
+                // intencional sigue estando en borrarBase(), que llama el boton
+                // Generar.
+                enunciado.execute("CREATE TABLE IF NOT EXISTS Tablas (numTabla int primary key, activo int, "
                         + "n1 int,n2 int,n3 int,n4 int,n5 int,"
                         + "n6 int,n7 int,n8 int,n9 int,n10 int,"
                         + "n11 int,n12 int,n13 int,n14 int,n15 int,"
