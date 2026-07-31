@@ -55,14 +55,17 @@ public final class Conector {
                 Statement enunciado;
                 enunciado = connect.createStatement();
 
-                // CREAR UNA TABLA NUEVA, LA BORRA SI EXISTE
-                enunciado.execute("DROP TABLE IF EXISTS Tablas;");
-                enunciado.execute("CREATE TABLE Tablas (numTabla int primary key, activo int, "
+                // Se crea la tabla SOLO si no existe. Antes hacia
+                // "DROP TABLE IF EXISTS Tablas" primero, de modo que abrir el
+                // programa borraba todos los cartones sin avisar. El borrado
+                // intencional sigue estando en borrarBase(), que llama el boton
+                // Generar.
+                enunciado.execute("CREATE TABLE IF NOT EXISTS Tablas (numTabla int primary key, activo int, "
                         + "n1 int,n2 int,n3 int,n4 int,n5 int,"
                         + "n6 int,n7 int,n8 int,n9 int,n10 int,"
                         + "n11 int,n12 int,n13 int,n14 int,n15 int,"
                         + "n16 int,n17 int,n18 int,n19 int,n20 int,"
-                        + "n21 int,n22 int,n23 int,n24 int,n25 int);");
+                        + "n21 int,n22 int,n23 int,n24 int,n25 int, codigo text);");
             }
         } catch (SQLException ex) {
             System.err.println("No se ha podido conectar a la base de datos\n" + ex.getMessage());
@@ -950,11 +953,49 @@ t.setCodigo(result.getString("codigo"));
      */
     public Vector verificarArchivo(Vector buscado, List<Integer> posiciones, String nombre)
             throws SQLException, IOException {
+        return verificarArchivo(buscado, posiciones, nombre, "-1", "-1");
+    }
+
+    /**
+     * Igual que {@link #verificarArchivo(Vector, List, String)} pero con la
+     * ruta de partida programada: cuando a un carton le falta UNA casilla para
+     * completar la figura, se anuncian las tablas pre-fijadas t10/t11.
+     *
+     * Las figuras de matriz.txt no tenian esta variante, asi que el amaño
+     * configurado nunca se aplicaba al jugar con ellas — que es la forma
+     * habitual de jugar. Misma condicion que las figuras fijas: faltando una.
+     */
+    public Vector verificarArchivo(Vector buscado, List<Integer> posiciones, String nombre,
+            String t10, String t11) throws SQLException, IOException {
+        return verificarArchivo(buscado, posiciones, nombre, t10, t11, null);
+    }
+
+    /**
+     * Variante completa de la partida programada para figuras de matriz.txt:
+     *
+     * <ul>
+     *   <li>{@code t10/t11}: premiadas cuando falta UNA casilla.</li>
+     *   <li>{@code completa}: premiadas cuando la figura se COMPLETA. Es la
+     *       modalidad del viejo registro 2, que solo alcanzaba al checkbox
+     *       "Pleno"; ahora vale para cualquier figura.</li>
+     * </ul>
+     *
+     * Las de "al completar" se anuncian UNA sola vez por verificacion, aunque
+     * varios cartones completen a la vez.
+     */
+    public Vector verificarArchivo(Vector buscado, List<Integer> posiciones, String nombre,
+            String t10, String t11, String[] completa) throws SQLException, IOException {
         Tabla t = new Tabla();
         Vector<Ganador> vtablasWin = new Vector<Ganador>();
         if (buscado == null || posiciones == null || posiciones.isEmpty()) {
             return vtablasWin;
         }
+        // Las pre-fijadas se anuncian UNA sola vez por verificacion. Sin esto,
+        // cada carton que califica volvia a anunciarlas: en figuras cortas
+        // (Pinos son 4 casillas) varios quedan a una a la vez y la ventana de
+        // ganadores mostraba la misma tabla repetida.
+        boolean completaAnunciada = false;
+        boolean faltaAnunciada = false;
         // Conjunto de numeros cantados (sin el centinela "-1" del indice 0).
         java.util.HashSet<String> cantados = new java.util.HashSet<>();
         for (int c = 1; c < buscado.size(); c++) {
@@ -969,15 +1010,35 @@ t.setCodigo(result.getString("codigo"));
                 t.setCodigo(result.getString("codigo"));
                 // Gana si CADA celda del patron esta cubierta: cantada, o es la
                 // casilla central libre (valor -1, que siempre cuenta como marcada).
-                boolean gana = true;
+                int faltan = 0;
                 for (Integer posicion : posiciones) {
                     if (posicion == null || posicion < 0 || posicion > 24) continue;
                     int val = bingo[posicion];
                     if (val == -1) continue;                 // centro libre
-                    if (!cantados.contains(Integer.toString(val))) { gana = false; break; }
+                    if (!cantados.contains(Integer.toString(val))) faltan++;
                 }
-                if (gana) {
+                if (faltan == 0) {
                     vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, t.getCodigo()));
+                    if (!completaAnunciada && completa != null) {
+                        for (String c : completa) {
+                            if (esTablaPrefijada(c)) {
+                                vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, c));
+                            }
+                        }
+                        completaAnunciada = true;
+                    }
+                } else if (faltan == 1 && !faltaAnunciada) {
+                    // Partida programada: al faltar UNA casilla, entran las pre-fijadas.
+                    boolean alguna = false;
+                    if (esTablaPrefijada(t10)) {
+                        vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, t10));
+                        alguna = true;
+                    }
+                    if (esTablaPrefijada(t11)) {
+                        vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, t11));
+                        alguna = true;
+                    }
+                    faltaAnunciada = alguna;
                 }
             }
         }

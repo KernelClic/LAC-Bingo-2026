@@ -51,6 +51,8 @@ public class Preferencias {
     public static final String MODULO_RANGOS = "RG";
     /** "Mantenimiento": permite eliminar este mismo archivo de preferencias. */
     public static final String MODULO_MANTENIMIENTO = "MT";
+    /** "Figuras": configuracion dinamica por figura, leida de matriz.txt. */
+    public static final String MODULO_FIGURAS = "FG";
 
     private static final String ARCHIVO = "config.ker";
 
@@ -64,6 +66,25 @@ public class Preferencias {
     };
 
     private static final String CLAVE_MODULOS = "config.modulos";
+
+    /**
+     * Version del catalogo de modulos. Sirve para que un modulo NUEVO aparezca
+     * en instalaciones que ya tenian una lista guardada: como la lista solo
+     * enumera los habilitados, sin esto no se puede distinguir "el usuario lo
+     * desactivo" de "no existia cuando guardo". Al subir la version se agregan
+     * los modulos incorporados desde entonces y se respeta el resto.
+     *   v1: 01, 02, 03, RG, MT
+     *   v2: + FG (Figuras dinamicas)
+     *   v3: - 03 (la pestaña de 16 figuras fijas la reemplaza FG). El modulo
+     *          sigue existiendo y se puede volver a marcar desde la ventana
+     *          oculta; solo deja de venir habilitado.
+     *   v4: - 01 y 02. La 02 (premiar al completarse) la reemplazan las
+     *          columnas "Completa" de FG; la 01 escribia el registro 1
+     *          (intentos, mensaje, tablas) que la Pantalla carga pero NO usa
+     *          al jugar. Ambas siguen disponibles desde la ventana oculta.
+     */
+    private static final String CLAVE_VERSION_MODULOS = "config.modulos.v";
+    private static final int VERSION_MODULOS = 4;
 
     /** Preferencias en memoria (se conserva el orden de escritura). */
     private final Map<String, String> valores = new LinkedHashMap<>();
@@ -272,6 +293,98 @@ public class Preferencias {
     }
 
     // =====================================================================
+    // Tablas pre-fijadas POR FIGURA (partida programada, esquema dinamico)
+    // =====================================================================
+
+    /**
+     * Prefijo de las claves por figura. Reemplaza al esquema viejo, que
+     * guardaba las figuras por POSICION en los registros partida.2..17 y por
+     * eso solo admitia 16. Aqui la clave es el NOMBRE de la figura tal como
+     * aparece en matriz.txt, de modo que se configuran todas las que haya.
+     *
+     * <pre>
+     *   figura.&lt;nombre&gt;.tabla1    carton pre-fijado 1
+     *   figura.&lt;nombre&gt;.tabla2    carton pre-fijado 2
+     *   figura.&lt;nombre&gt;.balotas   nro de balotas (informativo)
+     *   figura.&lt;nombre&gt;.completa1..3  premiadas AL COMPLETARSE la figura
+     * </pre>
+     */
+    private static final String PREFIJO_FIGURA = "figura.";
+
+    /** true si hay configuracion por figura (esquema nuevo) en el archivo. */
+    public boolean hayFigurasConfiguradas() {
+        for (String clave : valores.keySet()) {
+            if (clave.startsWith(PREFIJO_FIGURA)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Tablas pre-fijadas de una figura: {tabla1, tabla2}; "-1" si no aplica. */
+    public String[] getTablasFigura(String figura) {
+        if (figura == null) {
+            return new String[]{"-1", "-1"};
+        }
+        String base = PREFIJO_FIGURA + figura.trim() + ".";
+        String t1 = valores.get(base + "tabla1");
+        String t2 = valores.get(base + "tabla2");
+        return new String[]{t1 == null || t1.isEmpty() ? "-1" : t1,
+                            t2 == null || t2.isEmpty() ? "-1" : t2};
+    }
+
+    /**
+     * Tablas premiadas al COMPLETARSE la figura (hasta 3). Es la modalidad que
+     * antes vivia en el registro 2 (pestaña 02) y solo alcanzaba al checkbox
+     * "Pleno" del esquema viejo; aqui aplica a cualquier figura del catalogo.
+     */
+    public String[] getCompletaFigura(String figura) {
+        if (figura == null) {
+            return new String[]{"-1", "-1", "-1"};
+        }
+        String base = PREFIJO_FIGURA + figura.trim() + ".";
+        String[] r = new String[3];
+        for (int i = 0; i < 3; i++) {
+            String v = valores.get(base + "completa" + (i + 1));
+            r[i] = (v == null || v.isEmpty()) ? "-1" : v;
+        }
+        return r;
+    }
+
+    /** Fija las tablas premiadas al completarse; requiere {@link #guardar()}. */
+    public void setCompletaFigura(String figura, String c1, String c2, String c3) {
+        if (figura == null || figura.trim().isEmpty()) {
+            return;
+        }
+        String base = PREFIJO_FIGURA + figura.trim() + ".";
+        String[] v = {c1, c2, c3};
+        for (int i = 0; i < 3; i++) {
+            setValor(base + "completa" + (i + 1),
+                    v[i] == null || v[i].trim().isEmpty() ? "-1" : v[i].trim());
+        }
+    }
+
+    public int getBalotasFigura(String figura) {
+        return figura == null ? 0 : getEntero(PREFIJO_FIGURA + figura.trim() + ".balotas", 0);
+    }
+
+    /** Fija la configuracion de una figura; requiere {@link #guardar()}. */
+    public void setFigura(String figura, String tabla1, String tabla2, int balotas) {
+        if (figura == null || figura.trim().isEmpty()) {
+            return;
+        }
+        String base = PREFIJO_FIGURA + figura.trim() + ".";
+        setValor(base + "tabla1", tabla1 == null || tabla1.trim().isEmpty() ? "-1" : tabla1.trim());
+        setValor(base + "tabla2", tabla2 == null || tabla2.trim().isEmpty() ? "-1" : tabla2.trim());
+        setValor(base + "balotas", Integer.toString(balotas));
+    }
+
+    /** Borra toda la configuracion por figura (antes de regrabarla). */
+    public void limpiarFiguras() {
+        quitarPrefijo(PREFIJO_FIGURA);
+    }
+
+    // =====================================================================
     // Modulos habilitados
     // =====================================================================
 
@@ -292,11 +405,19 @@ public class Preferencias {
             }
         }
         if (lista.isEmpty()) {
-            lista.add(MODULO_01);
-            lista.add(MODULO_02);
-            lista.add(MODULO_03);
             lista.add(MODULO_RANGOS);
             lista.add(MODULO_MANTENIMIENTO);
+            lista.add(MODULO_FIGURAS);
+        } else if (getEntero(CLAVE_VERSION_MODULOS, 1) < VERSION_MODULOS) {
+            // Lista guardada por una version anterior: se habilita lo agregado
+            // desde entonces (para que no quede invisible) y se retira lo que
+            // quedo obsoleto.
+            if (!lista.contains(MODULO_FIGURAS)) {
+                lista.add(MODULO_FIGURAS);
+            }
+            lista.remove(MODULO_01);
+            lista.remove(MODULO_02);
+            lista.remove(MODULO_03);
         }
         // Solo para dejar el archivo prolijo; el orden de las pestañas lo fija
         // Vista/Config al armar la tira.
@@ -306,7 +427,8 @@ public class Preferencias {
 
     private static boolean esModulo(String m) {
         return MODULO_01.equals(m) || MODULO_02.equals(m) || MODULO_03.equals(m)
-                || MODULO_RANGOS.equals(m) || MODULO_MANTENIMIENTO.equals(m);
+                || MODULO_RANGOS.equals(m) || MODULO_MANTENIMIENTO.equals(m)
+                || MODULO_FIGURAS.equals(m);
     }
 
     public boolean tieneModulo(String modulo) {
@@ -323,6 +445,7 @@ public class Preferencias {
             sb.append(m);
         }
         setValor(CLAVE_MODULOS, sb.toString());
+        setValor(CLAVE_VERSION_MODULOS, Integer.toString(VERSION_MODULOS));
     }
 
     // =====================================================================
