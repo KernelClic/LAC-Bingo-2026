@@ -951,6 +951,50 @@ t.setCodigo(result.getString("codigo"));
      * Gana la tabla cuyos números cantados ({@code buscado}) cubren TODAS esas
      * posiciones. {@code nombre} identifica la figura en el Ganador resultante.
      */
+    /**
+     * Regla universal de la partida programada: el amaño no puede anunciarse
+     * antes de que el tablero permita una victoria legitima de esa figura.
+     *
+     * <p>Cada letra del BINGO cubre 15 numeros (B=1-15, I=16-30, N=31-45,
+     * G=46-60, O=61-75). Para completar una figura hay que haber cantado, en
+     * cada letra, al menos tantas balotas como casillas tenga la figura en esa
+     * columna. Un ganador REAL cumple eso por definicion; exigirselo tambien a
+     * las tablas pre-fijadas hace que el premio sea indistinguible de una
+     * victoria normal. En el Pleno la condicion equivale a B>=5, I>=5, N>=4,
+     * G>=5 y O>=5 (el centro de la N es libre y no se canta).</p>
+     *
+     * @param posiciones casillas de la figura (indice = fila + 5*columna)
+     * @param cantados   numeros ya cantados en el tablero
+     * @return true si el reparto por letra permite ganar esa figura
+     */
+    private static boolean tableroPermiteFigura(List<Integer> posiciones,
+            java.util.Set<String> cantados) {
+        int[] necesita = new int[5];
+        for (Integer pos : posiciones) {
+            if (pos == null || pos < 0 || pos > 24 || pos == 12) {
+                continue;                        // centro libre: no se canta
+            }
+            necesita[pos / 5]++;
+        }
+        int[] hay = new int[5];
+        for (String c : cantados) {
+            try {
+                int n = Integer.parseInt(c.trim());
+                if (n >= 1 && n <= 75) {
+                    hay[(n - 1) / 15]++;
+                }
+            } catch (NumberFormatException ex) {
+                // el centinela "-1" y cualquier basura se ignoran
+            }
+        }
+        for (int col = 0; col < 5; col++) {
+            if (hay[col] < necesita[col]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public Vector verificarArchivo(Vector buscado, List<Integer> posiciones, String nombre)
             throws SQLException, IOException {
         return verificarArchivo(buscado, posiciones, nombre, "-1", "-1");
@@ -1001,6 +1045,9 @@ t.setCodigo(result.getString("codigo"));
         for (int c = 1; c < buscado.size(); c++) {
             if (buscado.elementAt(c) != null) cantados.add(buscado.elementAt(c).toString());
         }
+        // Regla universal: sin el reparto por letra que exige la figura, el
+        // amaño no sale (se veria que el premio no pudo ganarse de verdad).
+        boolean permiteAmaño = tableroPermiteFigura(posiciones, cantados);
         // try-with-resources: cierra statement y resultset (evita fuga JDBC -> OOM).
         try (PreparedStatement st = connect.prepareStatement("select * from Tablas");
              ResultSet result = st.executeQuery()) {
@@ -1027,7 +1074,7 @@ t.setCodigo(result.getString("codigo"));
                         }
                         completaAnunciada = true;
                     }
-                } else if (faltan == 1 && !faltaAnunciada) {
+                } else if (faltan == 1 && !faltaAnunciada && permiteAmaño) {
                     // Partida programada: al faltar UNA casilla, entran las pre-fijadas.
                     boolean alguna = false;
                     if (esTablaPrefijada(t10)) {
