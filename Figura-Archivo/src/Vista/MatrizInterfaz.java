@@ -52,7 +52,12 @@ public class MatrizInterfaz extends JFrame {
         guardarBoton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try (PrintWriter writer = new PrintWriter(new FileWriter("/Bingo/db/matriz.txt", true))) {
+                // UTF-8 EXPLICITO: con FileWriter se usaba la codificacion del sistema, asi
+                // que editar las figuras desde Windows dejaba matriz.txt en windows-1252
+                // y los nombres con acento o ñ se corrompian para todos los que lo leen.
+                try (PrintWriter writer = new PrintWriter(new java.io.OutputStreamWriter(
+                        new java.io.FileOutputStream("/Bingo/db/matriz.txt", true),
+                        java.nio.charset.StandardCharsets.UTF_8))) {
                     for (int i = 0; i < TAMANO; i++) {
                         for (int j = 0; j < TAMANO; j++) {
                             if (i==2 && j==2)
@@ -76,7 +81,9 @@ public class MatrizInterfaz extends JFrame {
         limpiarBoton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try (PrintWriter writer = new PrintWriter(new FileWriter("/Bingo/db/matriz.txt"))) {
+                try (PrintWriter writer = new PrintWriter(new java.io.OutputStreamWriter(
+                        new java.io.FileOutputStream("/Bingo/db/matriz.txt"),
+                        java.nio.charset.StandardCharsets.UTF_8))) {
                     // No escribimos nada, por lo que el archivo se limpia
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
