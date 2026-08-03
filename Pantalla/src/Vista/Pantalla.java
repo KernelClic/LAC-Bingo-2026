@@ -3977,6 +3977,107 @@ public final class Pantalla extends javax.swing.JFrame {
         o15.setForeground(color);
     }
 
+    // ========================= DIAGNOSTICO =========================
+    // Instrumentacion de la partida programada: por cada balota registra el
+    // conteo por letra, lo que exige cada figura marcada y si el reparto
+    // permite o bloquea el amaño. Sirvio para encontrar por que el config no
+    // se aplicaba; se conserva porque es la unica forma de auditar una partida.
+    //
+    // APAGADO por defecto. Para encenderlo NO hace falta recompilar:
+    //
+    //     java -Dbingo.diag=true -jar Pantalla-Universal.jar
+    //
+    // conviene redirigir a un archivo:  ... 2>&1 | tee /Bingo/pruebas/juego.log
+
+    private static final boolean DIAG = Boolean.getBoolean("bingo.diag");
+
+    private void diagTraza(String linea) {
+        System.out.println("[DIAG] " + linea);
+        System.out.flush();
+    }
+
+    /** Balotas cantadas por letra, con el rango de cada una. */
+    private int[] diagConteoPorLetra() {
+        int[] hay = new int[5];
+        for (Object o : vBingo) {
+            try {
+                int n = Integer.parseInt(o.toString().trim());
+                if (n >= 1 && n <= 75) {
+                    hay[(n - 1) / 15]++;
+                }
+            } catch (NumberFormatException ex) {
+                // el centinela "-1" se ignora
+            }
+        }
+        return hay;
+    }
+
+    /** Casillas que la figura necesita en cada columna (el centro es libre). */
+    private int[] diagRequisito(java.util.List<Integer> posiciones) {
+        int[] req = new int[5];
+        for (Integer pos : posiciones) {
+            if (pos != null && pos >= 0 && pos <= 24 && pos != 12) {
+                req[pos / 5]++;
+            }
+        }
+        return req;
+    }
+
+    private void diagEstado(String numero) {
+        if (!DIAG) {
+            return;
+        }
+        int[] hay = diagConteoPorLetra();
+        diagTraza("---- balota " + numero + "  |  modoProgramado=" + modoProgramado
+                + "  |  cantadas=" + (vBingo.size() - 1));
+        diagTraza("     tablero por letra:  B=" + hay[0] + "  I=" + hay[1] + "  N=" + hay[2]
+                + "  G=" + hay[3] + "  O=" + hay[4]);
+        if (!modoProgramado || matrices == null || figChecks == null) {
+            return;
+        }
+        for (int i = 0; i < figChecks.size() && i < nombresFiguras.size(); i++) {
+            if (!figChecks.get(i).isSelected()) {
+                continue;
+            }
+            String nom = nombresFiguras.get(i);
+            String[] pf = prefijadasDeFigura(nom);
+            String[] cf = completaDeFigura(nom);
+            boolean tiene = !"-1".equals(pf[0]) || !"-1".equals(pf[1])
+                    || !"-1".equals(cf[0]) || !"-1".equals(cf[1]) || !"-1".equals(cf[2]);
+            int[] req = diagRequisito(posicionesDeMatriz(matrices.get(i)));
+            StringBuilder falta = new StringBuilder();
+            for (int c = 0; c < 5; c++) {
+                if (hay[c] < req[c]) {
+                    falta.append("BINGO".charAt(c)).append("(").append(hay[c]).append("/").append(req[c]).append(") ");
+                }
+            }
+            diagTraza("     figura \"" + nom + "\""
+                    + (tiene ? "  amaño: falta1=" + pf[0] + "," + pf[1] + "  completa=" + cf[0] + "," + cf[1] + "," + cf[2]
+                             : "  sin amaño configurado"));
+            diagTraza("        exige B>=" + req[0] + " I>=" + req[1] + " N>=" + req[2]
+                    + " G>=" + req[3] + " O>=" + req[4]
+                    + "   ->  " + (falta.length() == 0 ? "REPARTO OK, el amaño puede salir"
+                                                      : "BLOQUEADO, falta " + falta.toString().trim()));
+        }
+    }
+
+    private void diagGanadores() {
+        if (!DIAG) {
+            return;
+        }
+        diagTraza("     ganadores acumulados: " + ganadores.size());
+        for (Object o : ganadores) {
+            try {
+                diagTraza("        tabla=" + o.getClass().getMethod("getNumTabla").invoke(o)
+                        + " juego=" + o.getClass().getMethod("getJuego").invoke(o)
+                        + " codigo=" + o.getClass().getMethod("getCodigo").invoke(o));
+            } catch (Exception ex) {
+                diagTraza("        (no legible)");
+            }
+        }
+    }
+    // ======================= FIN DIAGNOSTICO =======================
+
     public void setColorNumeroSeleccionado(JLabel num) throws SQLException, IOException {
         Color colortmp = null;
         Vector<Ganador> tmpGanadores = new Vector<Ganador>();
@@ -3984,6 +4085,7 @@ public final class Pantalla extends javax.swing.JFrame {
         if (colortmp == cNumero) {
             num.setForeground(cNumeroSeleccionado);
             vBingo.addElement(num.getText());
+            diagEstado(num.getText());
 
             // verificar los juegos seleccionados
             if (this.juegoPleno.isSelected()) {
@@ -4128,6 +4230,7 @@ public final class Pantalla extends javax.swing.JFrame {
 
             // Cada figura ganada desaparece de la tira de orientacion.
             this.sincronizarFigurasEnLinea();
+            diagGanadores();
 
         } else {
             num.setForeground(cNumero);
