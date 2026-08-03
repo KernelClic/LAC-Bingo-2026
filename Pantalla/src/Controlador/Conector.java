@@ -870,7 +870,13 @@ t.setCodigo(result.getString("codigo"));
             del.executeUpdate("DELETE FROM figuras");
         }
 
-        try (Scanner scanner = new Scanner(file)) {
+        // UTF-8 EXPLICITO. Sin indicarlo, Scanner usa la codificacion por defecto
+        // del sistema: en Linux es UTF-8 y todo cuadra, pero en Windows es
+        // windows-1252 y los nombres con acento o ñ se leian mal
+        // ("Cruz Pequeña" -> "Cruz PequeÃ±a"). Como la configuracion por figura
+        // se guarda en config.ker indexada POR NOMBRE, la busqueda fallaba y la
+        // partida programada no se aplicaba en Windows.
+        try (Scanner scanner = new Scanner(file, "UTF-8")) {
             String matriz = "";
             String nombre = null;    // "# Nombre" (parte antes de '|')
             String mostrar = "";     // traduccion (parte despues de '|')
