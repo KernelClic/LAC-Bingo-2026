@@ -43,7 +43,7 @@ public class WinPantalla extends javax.swing.JDialog {
         for (int i=0; i<vWin.size();i++){
             
             //msg.setText(msg.getText()+" "+"<br>"+vWin.get(i).getJuego()+" Tabla No. "+generarCodigo(vWin.get(i).getNumTabla()));
-            msg.setText(msg.getText()+" "+"<br>"+TraductorMensajes.traducir(vWin.get(i).getJuego())+" Tabla No. "+vWin.get(i).getCodigo());
+            msg.setText(msg.getText()+" "+"<br>"+TraductorMensajes.traducir(vWin.get(i).getJuego())+" Tabla No. "+vWin.get(i).getCodigoFormateado());
             //msg.setText(msg.getText()+" "+"<br>"+vWin.get(i).getJuego()+" Tabla No. "+Integer.toString(vWin.get(i).getNumTabla()));
         }
         msg.setText(msg.getText()+"</html>");
@@ -81,7 +81,7 @@ public class WinPantalla extends javax.swing.JDialog {
         java.util.LinkedHashMap<String, java.util.List<String>> grupos = new java.util.LinkedHashMap<>();
         for (int i = 0; i < vWin.size(); i++) {
             String fig = TraductorMensajes.traducir(vWin.get(i).getJuego());
-            grupos.computeIfAbsent(fig, k -> new java.util.ArrayList<String>()).add(vWin.get(i).getCodigo());
+            grupos.computeIfAbsent(fig, k -> new java.util.ArrayList<String>()).add(vWin.get(i).getCodigoFormateado());
         }
         java.util.List<String> claves = new java.util.ArrayList<>(grupos.keySet());
         final String VERDE = "#00E000";     // ganador ACTUAL (verde intenso)
@@ -103,6 +103,15 @@ public class WinPantalla extends javax.swing.JDialog {
         }
         sb.append("</div></html>");
         msg.setText(sb.toString());
+
+        // El formulario fijaba el texto en 768x800 con GroupLayout, asi que la
+        // ventana media siempre lo mismo hubiera un ganador o veinte. Se pasa a
+        // BorderLayout para que el panel tome la medida real del contenido.
+        jPanel1.removeAll();
+        jPanel1.setLayout(new java.awt.BorderLayout());
+        msg.setBorder(javax.swing.BorderFactory.createEmptyBorder(24, 32, 24, 32));
+        jPanel1.add(msg, java.awt.BorderLayout.CENTER);
+        jPanel1.setPreferredSize(null);
 
         // Envolver en scroll para poder ver TODOS cuando hay muchos ganadores.
         javax.swing.JScrollPane sp = new javax.swing.JScrollPane(jPanel1,
@@ -129,6 +138,11 @@ public class WinPantalla extends javax.swing.JDialog {
             getContentPane().add(barra, java.awt.BorderLayout.SOUTH);
         }
 
+        // Tamaño segun el contenido. El pack() de initComponents corre antes de
+        // que exista el texto, asi que la ventana quedaba con la medida fija del
+        // formulario: enorme con un solo ganador y con scroll cuando eran varios.
+        ajustarAlContenido(sp, conCerrar);
+
         // Fade-in al aparecer (transicion suave desde el flash de ganador).
         try {
             setOpacity(0f);
@@ -146,6 +160,44 @@ public class WinPantalla extends javax.swing.JDialog {
         timer.start();
     }
     
+
+    /**
+     * Ajusta la ventana a lo que realmente se va a mostrar, sin pasarse de la
+     * pantalla: si el contenido es mas alto que el area disponible se recorta al
+     * maximo y aparece el scroll. Queda centrada.
+     */
+    private void ajustarAlContenido(javax.swing.JScrollPane sp, boolean conCerrar) {
+        // Monitor donde esta la ventana de juego: con dos pantallas hay que
+        // centrar en esa, no en el escritorio completo ni en la principal.
+        java.awt.GraphicsConfiguration gc = (getParent() != null && getParent().getGraphicsConfiguration() != null)
+                ? getParent().getGraphicsConfiguration()
+                : java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
+                        .getDefaultScreenDevice().getDefaultConfiguration();
+        java.awt.Rectangle pantalla = gc.getBounds();
+        java.awt.Insets bordes = java.awt.Toolkit.getDefaultToolkit().getScreenInsets(gc);
+        java.awt.Rectangle libre = new java.awt.Rectangle(
+                pantalla.x + bordes.left,
+                pantalla.y + bordes.top,
+                pantalla.width - bordes.left - bordes.right,
+                pantalla.height - bordes.top - bordes.bottom);
+        int maxAncho = (int) (libre.width * 0.90);
+        int maxAlto = (int) (libre.height * 0.90);
+
+        // La medida sale del texto ya renderizado, no del formulario.
+        java.awt.Dimension pref = msg.getPreferredSize();
+        int ancho = Math.min(Math.max(pref.width + 40, 420), maxAncho);
+        int alto = pref.height + 40 + (conCerrar ? 70 : 0);
+        alto = Math.min(Math.max(alto, 200), maxAlto);
+
+        setSize(ancho, alto);
+        // Centrada en ese monitor. setLocationRelativeTo(padre) dejaba la
+        // ventana descolocada cuando el padre no estaba centrado o el juego
+        // corria en el segundo monitor.
+        setLocation(libre.x + (libre.width - ancho) / 2,
+                    libre.y + (libre.height - alto) / 2);
+        sp.getVerticalScrollBar().setValue(0);
+    }
+
     public String generarCodigo (int nTabla) {
         
         Integer nT = nTabla;
