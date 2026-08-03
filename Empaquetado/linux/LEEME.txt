@@ -20,9 +20,12 @@ Requisito: Java 8 o superior (https://www.java.com).
 
 PRIMER USO
 ----------
-La base viene SIN tablas: abra el Generador, indique cuantas
-necesita y presione Generar. Recien entonces la Pantalla podra
-jugar y el Configurador mostrara los rangos.
+Abra el Generador y revise las tablas. Si la base viene vacia,
+indique cuantas necesita y presione Generar: la Pantalla no puede
+jugar ni el Configurador mostrar rangos sin tablas.
+
+ATENCION: el boton Generar BORRA las tablas existentes y crea unas
+nuevas. Si ya tiene un juego repartido, no lo presione.
 
 ACTIVACION (primera vez en cada equipo)
 ---------------------------------------
