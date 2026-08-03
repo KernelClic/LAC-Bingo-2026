@@ -966,22 +966,35 @@ t.setCodigo(result.getString("codigo"));
      * cada letra, al menos tantas balotas como casillas tenga la figura en esa
      * columna. Un ganador REAL cumple eso por definicion; exigirselo tambien a
      * las tablas pre-fijadas hace que el premio sea indistinguible de una
-     * victoria normal. En el Pleno la condicion equivale a B>=5, I>=5, N>=4,
-     * G>=5 y O>=5 (el centro de la N es libre y no se canta).</p>
+     * victoria normal.</p>
      *
-     * @param posiciones casillas de la figura (indice = fila + 5*columna)
-     * @param cantados   numeros ya cantados en el tablero
-     * @return true si el reparto por letra permite ganar esa figura
+     * <p>Excepcion para las figuras que ocupan el CARTON ENTERO (el Pleno):
+     * ahi se descuenta del requisito la letra de la casilla que falta. Sin ese
+     * descuento el Pleno casi nunca premiaba, porque un carton al que le falta
+     * una casilla deja su letra en 4 de las 5 exigidas y solo se destrababa si
+     * aparecia otra balota de esa misma letra.</p>
+     *
+     * <p>El descuento NO se aplica a las figuras cortas, y es a proposito: en
+     * Cuatro Esquinas (B&gt;=2, O&gt;=2) permitiria premiar con 3 balotas
+     * cantadas, y ahi el tablero delata que nadie pudo haber completado la
+     * figura, que es justo lo que esta regla evita.</p>
      */
-    private static boolean tableroPermiteFigura(List<Integer> posiciones,
-            java.util.Set<String> cantados) {
+    private static int[] requisitoPorLetra(List<Integer> posiciones) {
         int[] necesita = new int[5];
+        if (posiciones == null) {
+            return necesita;
+        }
         for (Integer pos : posiciones) {
             if (pos == null || pos < 0 || pos > 24 || pos == 12) {
                 continue;                        // centro libre: no se canta
             }
             necesita[pos / 5]++;
         }
+        return necesita;
+    }
+
+    /** Balotas cantadas en cada letra del tablero. */
+    private static int[] cantadasPorLetra(java.util.Set<String> cantados) {
         int[] hay = new int[5];
         for (String c : cantados) {
             try {
@@ -993,8 +1006,25 @@ t.setCodigo(result.getString("codigo"));
                 // el centinela "-1" y cualquier basura se ignoran
             }
         }
+        return hay;
+    }
+
+    /** true si la figura cubre el carton entero (5,5,4,5,5): el Pleno. */
+    private static boolean figuraCompleta(int[] necesita) {
+        return necesita[0] == 5 && necesita[1] == 5 && necesita[2] == 4
+                && necesita[3] == 5 && necesita[4] == 5;
+    }
+
+    /**
+     * @param letraDescuento letra de la casilla que le falta al carton (0..4),
+     *   o -1 si no aplica. Solo se descuenta en figuras que cubren todo el
+     *   carton; en las demas el requisito va completo.
+     */
+    private static boolean tableroPermiteFigura(int[] hay, int[] necesita, int letraDescuento) {
+        boolean descontar = figuraCompleta(necesita);
         for (int col = 0; col < 5; col++) {
-            if (hay[col] < necesita[col]) {
+            int exige = necesita[col] - ((descontar && col == letraDescuento) ? 1 : 0);
+            if (hay[col] < exige) {
                 return false;
             }
         }
@@ -1051,9 +1081,8 @@ t.setCodigo(result.getString("codigo"));
         for (int c = 1; c < buscado.size(); c++) {
             if (buscado.elementAt(c) != null) cantados.add(buscado.elementAt(c).toString());
         }
-        // Regla universal: sin el reparto por letra que exige la figura, el
-        // amaño no sale (se veria que el premio no pudo ganarse de verdad).
-        boolean permiteAmaño = tableroPermiteFigura(posiciones, cantados);
+        final int[] necesita = requisitoPorLetra(posiciones);
+        final int[] hayPorLetra = cantadasPorLetra(cantados);
         // try-with-resources: cierra statement y resultset (evita fuga JDBC -> OOM).
         try (PreparedStatement st = connect.prepareStatement("select * from Tablas");
              ResultSet result = st.executeQuery()) {
@@ -1064,11 +1093,15 @@ t.setCodigo(result.getString("codigo"));
                 // Gana si CADA celda del patron esta cubierta: cantada, o es la
                 // casilla central libre (valor -1, que siempre cuenta como marcada).
                 int faltan = 0;
+                int posFaltante = -1;
                 for (Integer posicion : posiciones) {
                     if (posicion == null || posicion < 0 || posicion > 24) continue;
                     int val = bingo[posicion];
                     if (val == -1) continue;                 // centro libre
-                    if (!cantados.contains(Integer.toString(val))) faltan++;
+                    if (!cantados.contains(Integer.toString(val))) {
+                        faltan++;
+                        posFaltante = posicion;              // para descontar su letra
+                    }
                 }
                 if (faltan == 0) {
                     vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, t.getCodigo()));
@@ -1080,7 +1113,8 @@ t.setCodigo(result.getString("codigo"));
                         }
                         completaAnunciada = true;
                     }
-                } else if (faltan == 1 && !faltaAnunciada && permiteAmaño) {
+                } else if (faltan == 1 && !faltaAnunciada
+                        && tableroPermiteFigura(hayPorLetra, necesita, posFaltante / 5)) {
                     // Partida programada: al faltar UNA casilla, entran las pre-fijadas.
                     boolean alguna = false;
                     if (esTablaPrefijada(t10)) {
