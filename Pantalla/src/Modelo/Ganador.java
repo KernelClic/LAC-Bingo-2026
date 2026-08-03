@@ -47,6 +47,20 @@ public class Ganador {
         return juego;
     }
     
+    /**
+     * Numero de tabla con 4 digitos, rellenando con ceros a la izquierda:
+     * 3 -> "0003", 43 -> "0043", 368 -> "0368", 8978 -> "8978". Si tuviera mas
+     * de 4 digitos se muestra completo, y si no fuera numerico se deja tal cual.
+     */
+    public String getCodigoFormateado() {
+        String c = codigo == null ? "" : codigo.trim();
+        try {
+            return String.format("%04d", Long.parseLong(c));
+        } catch (NumberFormatException ex) {
+            return c;
+        }
+    }
+
     public String getCodigo (){
         return this.codigo;
     }
