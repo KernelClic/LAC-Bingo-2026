@@ -4275,12 +4275,34 @@ public final class Pantalla extends javax.swing.JFrame {
     }
 
     /** Nombre a mostrar (traduccion) de la figura fi; si no tiene, el interno. */
+    /**
+     * Nombre con el que se anuncia una figura. El orden importa:
+     *
+     * <ol>
+     *   <li>la traduccion de /Bingo/db/mensajes_figuras.cfg, que es el archivo
+     *       pensado para que el operador cambie los textos;</li>
+     *   <li>si no hay, el alias de matriz.txt (lo que sigue al '|');</li>
+     *   <li>si tampoco, el nombre interno.</li>
+     * </ol>
+     *
+     * Antes se tomaba primero el alias de matriz.txt, asi que en las figuras que
+     * lo traian el archivo de traduccion quedaba sin efecto: se anunciaba
+     * "Crucesita" aunque el cfg dijera "+ PEQ".
+     */
     private String nombreMostrarFigura(int fi) {
+        String interno = (nombresFiguras != null && fi < nombresFiguras.size())
+                ? nombresFiguras.get(fi) : null;
+        if (interno != null && !interno.trim().isEmpty()) {
+            String t = Controlador.TraductorMensajes.traducir(interno.trim());
+            if (t != null && !t.trim().isEmpty() && !t.trim().equals(interno.trim())) {
+                return t.trim();                       // 1) traduccion del cfg
+            }
+        }
         if (nombresMostrar != null && fi < nombresMostrar.size()
                 && nombresMostrar.get(fi) != null && !nombresMostrar.get(fi).trim().isEmpty())
-            return nombresMostrar.get(fi).trim();
-        if (nombresFiguras != null && fi < nombresFiguras.size())
-            return nombresFiguras.get(fi);
+            return nombresMostrar.get(fi).trim();      // 2) alias de matriz.txt
+        if (interno != null)
+            return interno;                            // 3) nombre interno
         return "Figura " + (fi + 1);
     }
 
