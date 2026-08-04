@@ -44,9 +44,6 @@ import java.util.Map;
 public class Preferencias {
 
     /* Modulos opcionales del configurador. */
-    public static final String MODULO_01 = "01";
-    public static final String MODULO_02 = "02";
-    public static final String MODULO_03 = "03";
     /** "Rangos de Tablas": la pestaña comun, siempre la ultima de la tira. */
     public static final String MODULO_RANGOS = "RG";
     /** "Mantenimiento": permite eliminar este mismo archivo de preferencias. */
@@ -99,16 +96,17 @@ public class Preferencias {
      * los modulos incorporados desde entonces y se respeta el resto.
      *   v1: 01, 02, 03, RG, MT
      *   v2: + FG (Figuras dinamicas)
-     *   v3: - 03 (la pestaña de 16 figuras fijas la reemplaza FG). El modulo
-     *          sigue existiendo y se puede volver a marcar desde la ventana
-     *          oculta; solo deja de venir habilitado.
+     *   v3: - 03 (la pestaña de 16 figuras fijas la reemplaza FG).
      *   v4: - 01 y 02. La 02 (premiar al completarse) la reemplazan las
      *          columnas "Completa" de FG; la 01 escribia el registro 1
      *          (intentos, mensaje, tablas) que la Pantalla carga pero NO usa
-     *          al jugar. Ambas siguen disponibles desde la ventana oculta.
+     *          al jugar.
+     *   v5: 01, 02 y 03 dejan de existir. Sus ventanas se eliminaron y el
+     *          modulo ya no es valido, asi que si aparece en un archivo viejo
+     *          se descarta al leer.
      */
     private static final String CLAVE_VERSION_MODULOS = "config.modulos.v";
-    private static final int VERSION_MODULOS = 4;
+    private static final int VERSION_MODULOS = 5;
 
     /** Preferencias en memoria (se conserva el orden de escritura). */
     private final Map<String, String> valores = new LinkedHashMap<>();
@@ -488,9 +486,6 @@ public class Preferencias {
             if (!lista.contains(MODULO_FIGURAS)) {
                 lista.add(MODULO_FIGURAS);
             }
-            lista.remove(MODULO_01);
-            lista.remove(MODULO_02);
-            lista.remove(MODULO_03);
         }
         // Solo para dejar el archivo prolijo; el orden de las pestañas lo fija
         // Vista/Config al armar la tira.
@@ -499,8 +494,7 @@ public class Preferencias {
     }
 
     private static boolean esModulo(String m) {
-        return MODULO_01.equals(m) || MODULO_02.equals(m) || MODULO_03.equals(m)
-                || MODULO_RANGOS.equals(m) || MODULO_MANTENIMIENTO.equals(m)
+        return MODULO_RANGOS.equals(m) || MODULO_MANTENIMIENTO.equals(m)
                 || MODULO_FIGURAS.equals(m);
     }
 

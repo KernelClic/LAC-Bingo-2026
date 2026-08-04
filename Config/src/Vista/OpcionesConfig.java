@@ -33,9 +33,6 @@ public class OpcionesConfig extends JDialog {
 
     private final Preferencias prefs;
 
-    private final JCheckBox ch01 = new JCheckBox("01 · Mensaje / Intentos / Tablas");
-    private final JCheckBox ch02 = new JCheckBox("02 · Tablas / Editar");
-    private final JCheckBox ch03 = new JCheckBox("03 · Figuras / Letras (completo)");
     private final JCheckBox chRG = new JCheckBox("Rangos de Tablas");
     private final JCheckBox chMT = new JCheckBox("Mantenimiento (eliminar config.ker)");
     private final JCheckBox chFG = new JCheckBox("Figuras (todas, desde matriz.txt)");
@@ -65,9 +62,6 @@ public class OpcionesConfig extends JDialog {
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createEtchedBorder(),
                         BorderFactory.createEmptyBorder(8, 12, 8, 12))));
-        opciones.add(ch01);
-        opciones.add(ch02);
-        opciones.add(ch03);
         opciones.add(chRG);
         opciones.add(chMT);
         opciones.add(chFG);
@@ -116,9 +110,6 @@ public class OpcionesConfig extends JDialog {
     }
 
     private void marcarSegunPreferencias() {
-        ch01.setSelected(prefs.tieneModulo(Preferencias.MODULO_01));
-        ch02.setSelected(prefs.tieneModulo(Preferencias.MODULO_02));
-        ch03.setSelected(prefs.tieneModulo(Preferencias.MODULO_03));
         chRG.setSelected(prefs.tieneModulo(Preferencias.MODULO_RANGOS));
         chMT.setSelected(prefs.tieneModulo(Preferencias.MODULO_MANTENIMIENTO));
         chFG.setSelected(prefs.tieneModulo(Preferencias.MODULO_FIGURAS));
@@ -126,15 +117,6 @@ public class OpcionesConfig extends JDialog {
 
     private void guardar() {
         List<String> elegidos = new ArrayList<>();
-        if (ch01.isSelected()) {
-            elegidos.add(Preferencias.MODULO_01);
-        }
-        if (ch02.isSelected()) {
-            elegidos.add(Preferencias.MODULO_02);
-        }
-        if (ch03.isSelected()) {
-            elegidos.add(Preferencias.MODULO_03);
-        }
         if (chRG.isSelected()) {
             elegidos.add(Preferencias.MODULO_RANGOS);
         }
