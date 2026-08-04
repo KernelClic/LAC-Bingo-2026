@@ -139,6 +139,22 @@ public class FigurasDinamicas extends JPanel {
         }
     }
 
+    /**
+     * Cuantas casillas hay que marcar de verdad para completar la figura.
+     *
+     * <p>No es el numero de casillas que dibuja matriz.txt: la del centro es
+     * libre y cuenta como marcada desde el principio, asi que no se canta
+     * nunca. Solo el Pleno la incluye —el resto de figuras estan dibujadas
+     * esquivandola—, de modo que ahi la columna decia 25 cuando en la mesa se
+     * gana con 24.</p>
+     */
+    private static int casillasAMarcar(CatalogoFiguras.Figura f) {
+        return f.getCasillas().size() - (f.getCasillas().contains(CENTRO_LIBRE) ? 1 : 0);
+    }
+
+    /** Casilla central del carton: fila 2, columna 2 -> 2 + 5*2. */
+    private static final int CENTRO_LIBRE = 12;
+
     /** Vuelca el catalogo + lo guardado en la tabla. */
     private void llenar() {
         modelo.setRowCount(0);
@@ -148,7 +164,7 @@ public class FigurasDinamicas extends JPanel {
             modelo.addRow(new Object[]{
                 f.getNombre(),
                 f.getMostrar(),
-                f.getCasillas().size(),
+                casillasAMarcar(f),
                 "-1".equals(t[0]) ? "" : t[0],
                 "-1".equals(t[1]) ? "" : t[1],
                 "-1".equals(c[0]) ? "" : c[0],
