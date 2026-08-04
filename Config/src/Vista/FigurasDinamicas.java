@@ -168,6 +168,9 @@ public class FigurasDinamicas extends JPanel {
             tabla.getCellEditor().stopCellEditing();
         }
         prefs.limpiarFiguras();                 // se regraba completo
+        // Configurar aqui manda: la partida pasa a jugarse con estas figuras,
+        // aunque las tablas se hubieran generado con numeros de excepcion.
+        prefs.setModoPartida(Preferencias.MODO_FIGURAS);
         int conAmaño = 0;
         for (int i = 0; i < modelo.getRowCount(); i++) {
             String nombre = texto(modelo.getValueAt(i, COL_FIGURA));
@@ -205,6 +208,7 @@ public class FigurasDinamicas extends JPanel {
             return;
         }
         prefs.limpiarFiguras();
+        prefs.setModoPartida(Preferencias.MODO_FIGURAS);
         prefs.guardar();
         llenar();
         estado.setText("Amaño retirado de todas las figuras");
