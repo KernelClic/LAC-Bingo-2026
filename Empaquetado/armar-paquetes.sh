@@ -22,6 +22,7 @@ for f in Pantalla-Universal.jar Generador-Universal.jar Config-Universal.jar Rep
     [ -f "$ORIGEN/$f" ] || { echo "ERROR: falta $ORIGEN/$f"; exit 1; }
 done
 [ -d "$ORIGEN/lib" ] || { echo "ERROR: falta $ORIGEN/lib"; exit 1; }
+[ -f "$AQUI/plantilla/tablas.db" ] || { echo "ERROR: falta $AQUI/plantilla/tablas.db"; exit 1; }
 
 armar() {                       # $1 = windows|linux
     local so="$1" dest="$TMP/$1/Bingo"
@@ -29,8 +30,16 @@ armar() {                       # $1 = windows|linux
     cp "$ORIGEN"/*.jar "$dest"/
     cp "$ORIGEN"/lib/*.jar "$dest"/lib/
 
-    # db: SIN licencia.lic (cada equipo se activa) y SIN config.ker (arranca limpio)
-    for f in tablas.db matriz.txt mensajes_figuras.cfg; do
+    # db: SIN licencia.lic (cada equipo se activa) y SIN config.ker (arranca
+    # limpio; el programa lo crea con sus valores por defecto al primer uso).
+    #
+    # tablas.db NO se copia del despliegue: se entrega la PLANTILLA VACIA. La
+    # del despliegue lleva las tablas de quien haya estado probando aqui, y
+    # mandarlas a un cliente seria entregarle un reparto que no es el suyo
+    # —incluido el amaño, si se genero en modo Personalizada—. La plantilla
+    # conserva credenciales, licencia y figuras; solo va sin tablas.
+    cp "$AQUI/plantilla/tablas.db" "$dest/db/"
+    for f in matriz.txt mensajes_figuras.cfg; do
         [ -f "$ORIGEN/db/$f" ] && cp "$ORIGEN/db/$f" "$dest/db/"
     done
 
