@@ -129,11 +129,28 @@ public class Entrada extends javax.swing.JFrame {
                     this.setVisible(false);
                     wPantalla = new Pantalla();
 
-                    // Modo "partida programada": si hay partida guardada en
-                    // /Bingo/db/config.ker, se carga y se activa el amaño de
-                    // cartones pre-fijados. Sin ella, juego normal en vivo.
-                    if (AccessFile.hayPartida()) {
+                    // Con que se juega esta partida. Las dos formas de amaño son
+                    // EXCLUYENTES y lo decide la bandera amano.modo:
+                    //
+                    //   EXCEPCIONES -> el amaño ya viene en los cartones (los 15
+                    //                  numeros del generador). La Pantalla no
+                    //                  aplica NADA de config.ker.
+                    //   FIGURAS     -> manda la configuracion por figura
+                    //                  (falta 1 / al completar).
+                    Controlador.Preferencias prefs = new Controlador.Preferencias();
+                    boolean amanoEnCartones = prefs.esModoExcepciones();
+                    boolean hayFiguras = prefs.hayFigurasConfiguradas();
+                    boolean hayLegado = AccessFile.hayPartida();
+
+                    if (!amanoEnCartones && (hayFiguras || hayLegado)) {
                         wPantalla.setModoProgramado(true);
+                    }
+
+                    // El esquema VIEJO (partida.* posicional) solo se lee cuando no
+                    // hay configuracion por figura. Si se leyera siempre, sus restos
+                    // se colarian como tablas premiadas fantasma en partidas que ya
+                    // se configuran con el esquema nuevo.
+                    if (!amanoEnCartones && hayLegado && !hayFiguras) {
                         AccessFile.cargarPartida();
 
                         Configuracion conf1 = AccessFile.getConf(AccessFile.buscarRegistro(1));
