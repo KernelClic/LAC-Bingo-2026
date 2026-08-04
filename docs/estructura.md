@@ -28,6 +28,26 @@ for a in reporte-universal config figura-archivo; do
 done
 ```
 
+## El configurador: una sola rama
+
+`config/universal` es la UNICA rama del configurador. Su cascada es
+`main -> config/universal`; no tiene base propia ni variantes.
+
+Las variantes sueltas `config/base`, `config/01`, `config/02` y `config/03`
+**se retiraron el 2026-07-27**: las tres ultimas habian adoptado el arbol del
+unificado y eran identicas entre si, y `config/base` era el formulario previo,
+anterior a la unificacion en `config.ker` (desplegarla hoy romperia ese archivo).
+Su historia quedo en los tags `archivo/config-01`, `-02`, `-03` y `-base`:
+
+```
+git switch -c revisar-config-01 archivo/config-01     # si alguna vez hace falta
+```
+
+Dentro de `config/universal`, las tres variantes viven como pestañas
+(`Vista/Config01.java`, `Config02.java`, `Config03.java`) que arma el
+`JTabbedPane` de `Vista/Config.java`; un cambio a una variante se hace en su
+archivo, no en una rama aparte.
+
 ## Subir un fix generico descubierto en una variante
 ```
 # desde la variante, aislar el/los commit(s) genericos y llevarlos a base:

@@ -1,0 +1,89 @@
+================================================================
+  BINGO          Version Windows (portable)
+================================================================
+
+INSTALACION
+-----------
+Ejecute el instalador incluido:
+
+   Windows: doble clic en instalar.bat
+            (si avisa que no puede crear la carpeta, use boton derecho >
+             "Ejecutar como administrador")
+
+Copia todo a C:\\Bingo —la ruta que el programa necesita— comprueba
+que haya Java y crea los accesos directos.
+
+REINSTALAR ES SEGURO: si ya habia una instalacion, conserva sus
+datos (tablas, activacion y configuracion) y solo reemplaza los
+programas. Antes de tocar nada pide confirmacion.
+
+Requisito: Java 8 o superior (https://www.java.com).
+
+PRIMER USO
+----------
+Abra el Generador y revise las tablas. Si la base viene vacia,
+indique cuantas necesita y presione Generar: la Pantalla no puede
+jugar ni el Configurador mostrar rangos sin tablas.
+
+ATENCION: el boton Generar BORRA las tablas existentes y crea unas
+nuevas. Si ya tiene un juego repartido, no lo presione.
+
+ACTIVACION (primera vez en cada equipo)
+---------------------------------------
+Al abrir cualquiera de los programas en un equipo nuevo aparece la
+ventana de ACTIVACION con un "ID de equipo".
+
+   1. Envie ese ID al Administrador del Sistema.
+   2. Le devolveremos una clave de activacion.
+   3. Escribala en la ventana y presione Aceptar.
+
+La activacion se guarda en C:\Bingo/db/licencia.lic y queda
+atada a ESE equipo. Una sola activacion habilita los cuatro
+programas.
+
+PARTIDA PROGRAMADA (opcional)
+-----------------------------
+En el Configurador, pestaña "Figuras (todas)", se indica por cada
+figura que tablas deben resultar premiadas:
+
+   Falta 1  -> cuando a un carton le falta una casilla
+   Completa -> cuando la figura se completa
+
+Las figuras salen de db/matriz.txt, asi que aparecen todas las que
+haya. Si no se configura ninguna, la Pantalla juega normal y gana
+solo quien complete de verdad.
+
+DIAGNOSTICO (soporte)
+---------------------
+Si un premio de la partida programada no sale como se espera, la
+Pantalla puede registrar que decide en cada balota (conteo por
+letra del tablero, que exige cada figura y si el reparto permite
+el premio). Esta apagado; se enciende asi, sin reinstalar nada:
+
+   Windows:  java -Dbingo.diag=true -jar Pantalla-Universal.jar
+   Linux  :  java -Dbingo.diag=true -jar Pantalla-Universal.jar
+
+Envie la salida al Administrador del Sistema.
+
+CONTENIDO
+---------
+   *.jar        Los cuatro programas
+   lib/         Bibliotecas que usan (no borrar)
+   db/          Base de datos y configuracion
+                  tablas.db            tablas del juego
+                  config.ker           configuracion (se crea sola)
+                  licencia.lic         activacion (se crea al activar)
+                  matriz.txt           figuras
+                  mensajes_figuras.cfg textos de las figuras
+
+COPIAS DE SEGURIDAD
+-------------------
+Respalde la carpeta db/ : ahi estan sus tablas y su configuracion.
+
+PROBLEMAS FRECUENTES
+--------------------
+- "No se encontro Java"  -> instale Java y reintente.
+- La ventana no abre     -> verifique que la carpeta este en C:\Bingo
+- "Error de Conexion a Base de Datos"
+                         -> falta C:\Bingo/db/tablas.db
+================================================================
