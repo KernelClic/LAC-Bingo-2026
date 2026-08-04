@@ -124,19 +124,21 @@ public class Config extends javax.swing.JFrame {
 
     /**
      * Deja como pestañas solo los modulos habilitados en las preferencias, en
-     * el orden "Rangos de Tablas", "Figuras (todas)" y, de ultima,
-     * "Mantenimiento". Las instancias no se destruyen: un modulo deshabilitado
-     * sale de la vista y vuelve tal como estaba si se habilita de nuevo.
+     * el orden "Figuras (todas)", "Rangos de Tablas" y, de ultima,
+     * "Mantenimiento": primero lo que se configura para jugar, despues las
+     * tablas y al final el borrado. Las instancias no se destruyen: un modulo
+     * deshabilitado sale de la vista y vuelve tal como estaba si se habilita
+     * de nuevo.
      */
     private void aplicarModulos() {
         java.util.List<String> modulos = prefs.getModulos();
 
         tabs.removeAll();
-        if (rangos != null && modulos.contains(Preferencias.MODULO_RANGOS)) {
-            tabs.addTab(TAB_RANGOS, rangos);
-        }
         if (modulos.contains(Preferencias.MODULO_FIGURAS)) {
             tabs.addTab("Figuras (todas)", figuras);
+        }
+        if (rangos != null && modulos.contains(Preferencias.MODULO_RANGOS)) {
+            tabs.addTab(TAB_RANGOS, rangos);
         }
         if (modulos.contains(Preferencias.MODULO_MANTENIMIENTO)) {
             mantenimiento.refrescarEstado();

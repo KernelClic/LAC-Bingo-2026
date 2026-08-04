@@ -62,9 +62,10 @@ public class OpcionesConfig extends JDialog {
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createEtchedBorder(),
                         BorderFactory.createEmptyBorder(8, 12, 8, 12))));
+        // mismo orden que la tira de pestañas
+        opciones.add(chFG);
         opciones.add(chRG);
         opciones.add(chMT);
-        opciones.add(chFG);
 
         marcarSegunPreferencias();
 
