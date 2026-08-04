@@ -333,6 +333,36 @@ public class Preferencias {
                 ? MODO_EXCEPCIONES : MODO_FIGURAS);
     }
 
+    /**
+     * Quita del archivo la partida del esquema VIEJO (posicional, claves
+     * {@code partida.*}). Se llama al guardar la configuracion por figura: a
+     * partir de ahi la Pantalla ya no lee ese bloque, asi que lo unico que
+     * hacen sus restos es engordar el archivo y prestarse a confusion.
+     */
+    public void purgarPartidaVieja() {
+        quitarPrefijo(PREFIJO_PARTIDA);   // incluye partida.n, la cuenta de registros
+    }
+
+    /**
+     * Deja {@code config.modulos} con la lista realmente vigente y sellada con
+     * la version actual. Sin esto el archivo sigue nombrando modulos que la
+     * migracion ya descarta al leer, y el valor guardado miente.
+     */
+    public void normalizarModulos() {
+        setModulos(getModulos());
+    }
+
+    /** Cuantas claves quitaria {@link #purgarPartidaVieja()} ahora mismo. */
+    public int clavesDePartidaVieja() {
+        int n = 0;
+        for (String c : valores.keySet()) {
+            if (c.startsWith(PREFIJO_PARTIDA)) {
+                n++;
+            }
+        }
+        return n;
+    }
+
     // =====================================================================
     // Tablas pre-fijadas POR FIGURA (partida programada, esquema dinamico)
     // =====================================================================
@@ -351,6 +381,8 @@ public class Preferencias {
      * </pre>
      */
     private static final String PREFIJO_FIGURA = "figura.";
+    /** Esquema VIEJO: la partida programada posicional. Ya no se lee si hay figuras. */
+    private static final String PREFIJO_PARTIDA = "partida.";
 
     /** true si hay configuracion por figura (esquema nuevo) en el archivo. */
     public boolean hayFigurasConfiguradas() {
