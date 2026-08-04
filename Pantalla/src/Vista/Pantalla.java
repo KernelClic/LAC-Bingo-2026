@@ -4058,10 +4058,26 @@ public final class Pantalla extends javax.swing.JFrame {
             boolean tiene = !"-1".equals(pf[0]) || !"-1".equals(pf[1])
                     || !"-1".equals(cf[0]) || !"-1".equals(cf[1]) || !"-1".equals(cf[2]);
             int[] req = diagRequisito(posicionesDeMatriz(matrices.get(i)));
+            // El Pleno descuenta la letra de la casilla que falta, asi que la
+            // traza tiene que mirar la exigencia EFECTIVA: si se calcula la
+            // entera, dice BLOQUEADO en la misma balota en la que el Conector
+            // premia, y la traza contradice al juego.
+            boolean pleno = req[0] == 5 && req[1] == 5 && req[2] == 4 && req[3] == 5 && req[4] == 5;
             StringBuilder falta = new StringBuilder();
+            int cortas = 0, letraCorta = -1;
             for (int c = 0; c < 5; c++) {
                 if (hay[c] < req[c]) {
-                    falta.append("BINGO".charAt(c)).append("(").append(hay[c]).append("/").append(req[c]).append(") ");
+                    cortas++;
+                    letraCorta = c;
+                }
+            }
+            // en el Pleno, una sola letra a uno de su minimo es justo el caso
+            // del descuento: al carton le falta esa casilla y al tablero tambien
+            boolean descuenta = pleno && cortas == 1 && hay[letraCorta] == req[letraCorta] - 1;
+            for (int c = 0; c < 5; c++) {
+                int exige = (descuenta && c == letraCorta) ? req[c] - 1 : req[c];
+                if (hay[c] < exige) {
+                    falta.append("BINGO".charAt(c)).append("(").append(hay[c]).append("/").append(exige).append(") ");
                 }
             }
             diagTraza("     figura \"" + nom + "\""
@@ -4069,6 +4085,7 @@ public final class Pantalla extends javax.swing.JFrame {
                              : "  sin amaño configurado"));
             diagTraza("        exige B>=" + req[0] + " I>=" + req[1] + " N>=" + req[2]
                     + " G>=" + req[3] + " O>=" + req[4]
+                    + (descuenta ? "  (Pleno: -1 en " + "BINGO".charAt(letraCorta) + ", la casilla que falta)" : "")
                     + "   ->  " + (falta.length() == 0 ? "REPARTO OK, el amaño puede salir"
                                                       : "BLOQUEADO, falta " + falta.toString().trim()));
         }
