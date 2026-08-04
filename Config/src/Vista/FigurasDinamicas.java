@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- * Pestaña "Figuras": configura las tablas pre-fijadas de la partida programada
+ * Pestaña "Figuras": configura las tablas ajustadas de la partida programada
  * para CADA figura del catalogo, no para una lista fija.
  *
  * <p>Reemplaza al esquema anterior, donde el formulario tenia 16 filas dibujadas
@@ -60,7 +60,7 @@ public class FigurasDinamicas extends JPanel {
         JLabel ayuda = new JLabel("<html><center>Tablas que deben resultar premiadas en cada figura, en dos momentos:<br>"
                 + "<b>Falta 1</b> — cuando al carton le falta una casilla &nbsp;|&nbsp; "
                 + "<b>Completa</b> — cuando la figura se completa.<br>"
-                + "Deje en blanco las figuras que no quiera amañar.</center></html>",
+                + "Deje en blanco las figuras que no quiera ajustar.</center></html>",
                 SwingConstants.CENTER);
         ayuda.setForeground(Color.DARK_GRAY);
 
@@ -101,7 +101,7 @@ public class FigurasDinamicas extends JPanel {
                 estado.setText("Recargado desde " + Preferencias.getRutaArchivo());
             }
         });
-        JButton btnLimpiar = new JButton("Quitar todo el amaño");
+        JButton btnLimpiar = new JButton("Quitar todos los ajustes");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,7 +175,7 @@ public class FigurasDinamicas extends JPanel {
         // configuradas, asi que se va del archivo en vez de quedar de lastre.
         prefs.purgarPartidaVieja();
         prefs.normalizarModulos();
-        int conAmaño = 0;
+        int conAjuste = 0;
         for (int i = 0; i < modelo.getRowCount(); i++) {
             String nombre = texto(modelo.getValueAt(i, COL_FIGURA));
             String t1 = texto(modelo.getValueAt(i, COL_TABLA1));
@@ -188,7 +188,7 @@ public class FigurasDinamicas extends JPanel {
             }
             prefs.setFigura(nombre, t1, t2, 0);
             prefs.setCompletaFigura(nombre, c1, c2, c3);
-            conAmaño++;
+            conAjuste++;
         }
         if (!prefs.guardar()) {
             JOptionPane.showMessageDialog(this,
@@ -196,18 +196,18 @@ public class FigurasDinamicas extends JPanel {
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        estado.setText("Guardado: " + conAmaño + " figuras con tablas pre-fijadas");
+        estado.setText("Guardado: " + conAjuste + " figuras con tablas ajustadas");
         JOptionPane.showMessageDialog(this,
-                conAmaño == 0
-                        ? "No quedo ninguna figura amañada: la Pantalla jugara normal."
-                        : "Guardadas " + conAmaño + " figuras con tablas pre-fijadas.",
+                conAjuste == 0
+                        ? "No quedo ninguna figura ajustada: la Pantalla jugara normal."
+                        : "Guardadas " + conAjuste + " figuras con tablas ajustadas.",
                 "Listo", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void limpiar() {
         int op = JOptionPane.showConfirmDialog(this,
-                "Se quitaran las tablas pre-fijadas de TODAS las figuras.\n¿Confirma?",
-                "Quitar amaño", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                "Se quitaran las tablas ajustadas de TODAS las figuras.\n¿Confirma?",
+                "Quitar ajustes", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (op != JOptionPane.YES_OPTION) {
             return;
         }
@@ -217,7 +217,7 @@ public class FigurasDinamicas extends JPanel {
         prefs.normalizarModulos();
         prefs.guardar();
         llenar();
-        estado.setText("Amaño retirado de todas las figuras");
+        estado.setText("Ajustes retirados de todas las figuras");
     }
 
     private static String texto(Object v) {
