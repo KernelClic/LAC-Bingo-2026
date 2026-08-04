@@ -5,8 +5,9 @@
  */
 package Vista;
 
-//import Controlador.AccesoAleatorio;
+//import Controlador.PreferenciasGenerador;
 import Controlador.AccesoAleatorio;
+import Controlador.PreferenciasGenerador;
 import Controlador.Conector;
 import Modelo.Tabla;
 import java.io.File;
@@ -692,6 +693,8 @@ public class Generador extends javax.swing.JFrame {
 
                 con.borrarBase();
                 GenerarTablas(1);
+                // Sin excepciones: si hay amaño, vive en config.ker.
+                registrarModoPartida(false);
                 //Mensaje.setText(Integer.toString(this.generarNumero(1)));
             } catch (IOException ex) {
                 Logger.getLogger(Generador.class.getName()).log(Level.SEVERE, null, ex);
@@ -770,6 +773,8 @@ public class Generador extends javax.swing.JFrame {
                 try {
                     con.borrarBase();
                     GenerarTablas(2);
+                    // Con excepciones: el amaño quedo cocido en los cartones.
+                    registrarModoPartida(hayExcepciones());
                 } catch (IOException | SQLException ex) {
                     Logger.getLogger(Generador.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1231,6 +1236,42 @@ public class Generador extends javax.swing.JFrame {
             }
         }
         return (enc);
+    }
+
+
+    /**
+     * true si se cargo al menos un numero de excepcion. Con excepciones, el
+     * amaño esta en los propios cartones: solo las tablas ganadoras pueden
+     * completarse, porque a las demas se les metieron numeros que no se
+     * cantaran.
+     */
+    private boolean hayExcepciones() {
+        if (excNum == null) {
+            return false;
+        }
+        for (int n : excNum) {
+            if (n != 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Anota en config.ker con que amaño se debe jugar, para que la Pantalla no
+     * combine los dos: o manda el de los cartones (excepciones), o el de la
+     * configuracion por figura. Manda lo ultimo que se configuro.
+     */
+    private void registrarModoPartida(boolean conExcepciones) {
+        try {
+            PreferenciasGenerador p = new PreferenciasGenerador();
+            p.setModoPartida(conExcepciones
+                    ? PreferenciasGenerador.MODO_EXCEPCIONES
+                    : PreferenciasGenerador.MODO_FIGURAS);
+            p.guardar();
+        } catch (Exception ex) {
+            // no poder anotarlo no debe impedir generar las tablas
+        }
     }
 
     public boolean validarExcepciones() {
