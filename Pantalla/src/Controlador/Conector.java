@@ -968,7 +968,9 @@ t.setCodigo(result.getString("codigo"));
      * las tablas pre-fijadas hace que el premio sea indistinguible de una
      * victoria normal.</p>
      *
-     * <p>El requisito va COMPLETO, sin excepciones ni descuentos: en el Pleno
+     * <p>El requisito va completo en todas las figuras salvo el Pleno, donde se
+     * descuenta la letra de la casilla que falta (ver
+     * {@link #tableroPermiteFigura}). Sin ese descuento: en el Pleno
      * significa B&gt;=5, I&gt;=5, N&gt;=4, G&gt;=5 y O&gt;=5. Un carton al que
      * le falta una casilla deja la letra de esa casilla en 4, asi que el premio
      * espera a que aparezca otra balota de esa misma letra —lo que en una
@@ -1007,13 +1009,36 @@ t.setCodigo(result.getString("codigo"));
         return hay;
     }
 
-    private static boolean tableroPermiteFigura(int[] hay, int[] necesita) {
+    /**
+     * true si el tablero da para que un carton este a una casilla de la figura.
+     *
+     * @param letraQueFalta columna (0=B .. 4=O) de la casilla que le falta al
+     *        carton, o -1 si no se sabe. Solo se usa en el Pleno.
+     */
+    private static boolean tableroPermiteFigura(int[] hay, int[] necesita, int letraQueFalta) {
         for (int col = 0; col < 5; col++) {
-            if (hay[col] < necesita[col]) {
+            int exige = necesita[col];
+            // DESCUENTO, solo en el Pleno: a la letra de la casilla que falta se
+            // le resta uno. El carton del Pleno tiene exactamente B5 I5 N4 G5 O5,
+            // que es el requisito entero, asi que al faltarle una casilla esa
+            // letra queda forzosamente uno por debajo y el premio no podia salir
+            // nunca en la balota 23 —solo en la 24, y unicamente si aparecia una
+            // balota ajena de esa misma letra—. Con el descuento el amaño sale
+            // donde corresponde: al carton le falta una y al tablero tambien.
+            if (esPleno(necesita) && col == letraQueFalta && exige > 0) {
+                exige--;
+            }
+            if (hay[col] < exige) {
                 return false;
             }
         }
         return true;
+    }
+
+    /** true si la figura cubre el carton entero (B5 I5 N4 G5 O5): el Pleno. */
+    private static boolean esPleno(int[] necesita) {
+        return necesita[0] == 5 && necesita[1] == 5 && necesita[2] == 4
+                && necesita[3] == 5 && necesita[4] == 5;
     }
 
     public Vector verificarArchivo(Vector buscado, List<Integer> posiciones, String nombre)
@@ -1077,11 +1102,15 @@ t.setCodigo(result.getString("codigo"));
                 // Gana si CADA celda del patron esta cubierta: cantada, o es la
                 // casilla central libre (valor -1, que siempre cuenta como marcada).
                 int faltan = 0;
+                int letraQueFalta = -1;                  // columna 0=B .. 4=O
                 for (Integer posicion : posiciones) {
                     if (posicion == null || posicion < 0 || posicion > 24) continue;
                     int val = bingo[posicion];
                     if (val == -1) continue;                 // centro libre
-                    if (!cantados.contains(Integer.toString(val))) faltan++;
+                    if (!cantados.contains(Integer.toString(val))) {
+                        faltan++;
+                        letraQueFalta = posicion / 5;        // el indice es fila + 5*columna
+                    }
                 }
                 if (faltan == 0) {
                     reales.add(new Ganador(t.getNumTabla(), nombre, t.getCodigo()));
@@ -1089,7 +1118,7 @@ t.setCodigo(result.getString("codigo"));
                         tablaCompleta = t.getNumTabla();
                     }
                 } else if (faltan == 1 && tablaFalta1 < 0
-                        && tableroPermiteFigura(hayPorLetra, necesita)) {
+                        && tableroPermiteFigura(hayPorLetra, necesita, letraQueFalta)) {
                     tablaFalta1 = t.getNumTabla();
                 }
             }
