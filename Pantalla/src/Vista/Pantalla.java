@@ -250,11 +250,24 @@ public final class Pantalla extends javax.swing.JFrame {
     }
 
     /**
+     * true si el amaño esta en los propios cartones, porque se generaron con
+     * numeros de excepcion que no se cantaran. Las dos formas de amañar son
+     * EXCLUYENTES: en ese caso la Pantalla ignora por completo lo configurado
+     * en config.ker (falta 1 y al completar) y deja que ganen los cartones.
+     */
+    private boolean amanoEnLosCartones() {
+        return prefsFiguras != null && prefsFiguras.esModoExcepciones();
+    }
+
+    /**
      * Tablas premiadas al COMPLETARSE la figura (esquema dinamico). Si no hay
      * configuracion por figura se cae al registro 2 del esquema viejo, que solo
      * aplicaba al Pleno.
      */
     private String[] completaDeFigura(String nombreInterno) {
+        if (amanoEnLosCartones()) {
+            return new String[]{"-1", "-1", "-1"};
+        }
         if (prefsFiguras != null && prefsFiguras.hayFigurasConfiguradas()) {
             return prefsFiguras.getCompletaFigura(nombreInterno);
         }
@@ -277,7 +290,7 @@ public final class Pantalla extends javax.swing.JFrame {
      * @return {t10, t11} de esa figura, o {"-1","-1"} si no aplica.
      */
     private String[] prefijadasDeFigura(String nombreInterno) {
-        if (nombreInterno == null) {
+        if (nombreInterno == null || amanoEnLosCartones()) {
             return new String[]{"-1", "-1"};
         }
         // Esquema NUEVO (dinamico): la configuracion se guarda por NOMBRE de

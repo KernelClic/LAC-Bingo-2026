@@ -68,6 +68,30 @@ public class Preferencias {
     private static final String CLAVE_MODULOS = "config.modulos";
 
     /**
+     * Con que amaño se juega. Las dos formas son EXCLUYENTES y la Pantalla no
+     * debe combinarlas:
+     *
+     * <ul>
+     *   <li>{@link #MODO_EXCEPCIONES}: el amaño esta cocido en los cartones. El
+     *       Generador los creo en modo Personalizada con numeros de excepcion
+     *       que no se cantaran, de modo que solo las tablas ganadoras pueden
+     *       completarse. La configuracion por figura NO se aplica.</li>
+     *   <li>{@link #MODO_FIGURAS}: el amaño esta en este archivo (falta 1 y/o
+     *       al completar). Es el valor por defecto.</li>
+     * </ul>
+     *
+     * La escribe quien configura: el Generador al generar, y el Configurador al
+     * guardar la pestaña Figuras. Manda lo ultimo que se hizo.
+     */
+    public static final String MODO_EXCEPCIONES = "EXCEPCIONES";
+    public static final String MODO_FIGURAS = "FIGURAS";
+
+    // OJO: la clave NO puede empezar con "partida.". AccessFile borra ese
+    // prefijo entero cada vez que graba la partida programada, asi que la
+    // bandera se perderia al primer guardado del configurador.
+    private static final String CLAVE_MODO = "amano.modo";
+
+    /**
      * Version del catalogo de modulos. Sirve para que un modulo NUEVO aparezca
      * en instalaciones que ya tenian una lista guardada: como la lista solo
      * enumera los habilitados, sin esto no se puede distinguir "el usuario lo
@@ -290,6 +314,23 @@ public class Preferencias {
                 modificadas.remove(c);
             }
         }
+    }
+
+    /** Modo de amaño vigente; por defecto el de configuracion por figura. */
+    public String getModoPartida() {
+        String v = valores.get(CLAVE_MODO);
+        return MODO_EXCEPCIONES.equalsIgnoreCase(v == null ? "" : v.trim())
+                ? MODO_EXCEPCIONES : MODO_FIGURAS;
+    }
+
+    /** true si el amaño esta en los cartones y no en este archivo. */
+    public boolean esModoExcepciones() {
+        return MODO_EXCEPCIONES.equals(getModoPartida());
+    }
+
+    public void setModoPartida(String modo) {
+        setValor(CLAVE_MODO, MODO_EXCEPCIONES.equalsIgnoreCase(modo == null ? "" : modo.trim())
+                ? MODO_EXCEPCIONES : MODO_FIGURAS);
     }
 
     // =====================================================================
