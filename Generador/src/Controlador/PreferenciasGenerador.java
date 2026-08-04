@@ -63,6 +63,18 @@ public class PreferenciasGenerador {
 
     private static final String CLAVE_MODOS = "generacion.modos";
 
+    /**
+     * Con que amaño se juega. Lo lee la Pantalla para NO combinar las dos
+     * formas: si las tablas se generaron con numeros de excepcion, el amaño ya
+     * esta en los cartones y la configuracion por figura no debe aplicarse.
+     * La clave es la misma que usan el Config y la Pantalla.
+     */
+    // No puede empezar con "partida.": AccessFile borra ese prefijo completo
+    // al grabar la partida y la bandera se perderia.
+    private static final String CLAVE_MODO_PARTIDA = "amano.modo";
+    public static final String MODO_EXCEPCIONES = "EXCEPCIONES";
+    public static final String MODO_FIGURAS = "FIGURAS";
+
     /** Preferencias en memoria (se conserva el orden de escritura). */
     private final Map<String, String> valores = new LinkedHashMap<>();
 
@@ -236,6 +248,12 @@ public class PreferenciasGenerador {
             return valor;
         }
         return MODO_AMBAS;
+    }
+
+    /** Deja constancia de con que amaño se generaron las tablas. */
+    public void setModoPartida(String modo) {
+        valores.put(CLAVE_MODO_PARTIDA, MODO_EXCEPCIONES.equals(modo) ? MODO_EXCEPCIONES : MODO_FIGURAS);
+        modificadas.add(CLAVE_MODO_PARTIDA);
     }
 
     public void setModosDisponibles(String modo) {
