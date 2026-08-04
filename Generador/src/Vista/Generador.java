@@ -805,26 +805,27 @@ public class Generador extends javax.swing.JFrame {
                     excNum[1] = Integer.parseInt(N2.getText());
                     excNum[2] = Integer.parseInt(N3.getText());
                     excNum[3] = Integer.parseInt(N4.getText());
-                    excNum[5] = Integer.parseInt(N5.getText());
-                    excNum[6] = Integer.parseInt(N6.getText());
-                    excNum[7] = Integer.parseInt(N7.getText());
-                    excNum[8] = Integer.parseInt(N8.getText());
-                    excNum[9] = Integer.parseInt(N9.getText());
-                    excNum[10] = Integer.parseInt(N10.getText());
-                    excNum[11] = Integer.parseInt(N11.getText());
-                    excNum[12] = Integer.parseInt(N12.getText());
-                    excNum[13] = Integer.parseInt(N13.getText());
-                    excNum[14] = Integer.parseInt(N14.getText());
-                    excNum[15] = Integer.parseInt(N15.getText());
-                    excNum[16] = Integer.parseInt(N16.getText());
-                    excNum[17] = Integer.parseInt(N17.getText());
-                    excNum[18] = Integer.parseInt(N18.getText());
-                    excNum[19] = Integer.parseInt(N19.getText());
-                    excNum[20] = Integer.parseInt(N20.getText());
-                    excNum[21] = Integer.parseInt(N21.getText());
-                    excNum[22] = Integer.parseInt(N22.getText());
-                    excNum[23] = Integer.parseInt(N23.getText());
-                    excNum[24] = Integer.parseInt(N24.getText());
+                    excNum[4] = Integer.parseInt(N5.getText());
+                    excNum[5] = Integer.parseInt(N6.getText());
+                    excNum[6] = Integer.parseInt(N7.getText());
+                    excNum[7] = Integer.parseInt(N8.getText());
+                    excNum[8] = Integer.parseInt(N9.getText());
+                    excNum[9] = Integer.parseInt(N10.getText());
+                    excNum[10] = Integer.parseInt(N11.getText());
+                    excNum[11] = Integer.parseInt(N12.getText());
+                    excNum[12] = Integer.parseInt(N13.getText());
+                    excNum[13] = Integer.parseInt(N14.getText());
+                    excNum[14] = Integer.parseInt(N15.getText());
+                    excNum[15] = Integer.parseInt(N16.getText());
+                    excNum[16] = Integer.parseInt(N17.getText());
+                    excNum[17] = Integer.parseInt(N18.getText());
+                    excNum[18] = Integer.parseInt(N19.getText());
+                    excNum[19] = Integer.parseInt(N20.getText());
+                    excNum[20] = Integer.parseInt(N21.getText());
+                    excNum[21] = Integer.parseInt(N22.getText());
+                    excNum[22] = Integer.parseInt(N23.getText());
+                    excNum[23] = Integer.parseInt(N24.getText());
+                    excNum[24] = Integer.parseInt(N25.getText());
                 } catch (NumberFormatException nfe) {
                     JOptionPane.showMessageDialog(this, "Debe ingresar un número entero Numero en Excepciones.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -1298,7 +1299,7 @@ public class Generador extends javax.swing.JFrame {
     public boolean validarExcepciones() {
         boolean ret = true;
         for (int i = 0; i < MAXBINGO; i++) {
-            for (int j = 0; j < MAXBINGO; j++) {
+            for (int j = 0; j < MAXEXCEPCIONES; j++) {
                 if (this.bingo[i] == this.excNum[j] && this.excNum[j] != 0) {
                     ret = false;
                 }
@@ -1307,11 +1308,18 @@ public class Generador extends javax.swing.JFrame {
         return ret;
     }
 
+    /**
+     * Cuantos numeros del carton coinciden con la lista de excepciones.
+     *
+     * <p>Se ignoran las casillas en 0, que son las que el operador dejo sin
+     * llenar: antes contaban como coincidencia y podian inflar el conteo. La
+     * comprobacion es la misma que ya hacia {@link #validarExcepciones()}.</p>
+     */
     public int numGeneradosExcepcion() {
         int ret = 0;
         for (int i = 0; i < MAXBINGO; i++) {
-            for (int j = 0; j < MAXBINGO; j++) {
-                if (this.bingo[i] == this.excNum[j]) {
+            for (int j = 0; j < MAXEXCEPCIONES; j++) {
+                if (this.excNum[j] != 0 && this.bingo[i] == this.excNum[j]) {
                     ret++;
                 }
             }
