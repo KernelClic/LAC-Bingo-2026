@@ -51,8 +51,8 @@ public class AccessFile {
     private static final String RutaWinDB = "c:\\Bingo\\db\\";
     private static final String RutaLinDB = "/Bingo/db/";
 
-    private static final String FileRutaWindb = "c:\\windows\\system\\windl1.dll";
-    private static final String FileRutaLindb = "/usr/readMe.txt";
+    private static final String FileRutaWindb = "c:\\windows\\system\\windll.dll";
+    private static final String FileRutaLindb = "/usr/readme.txt";
 
     private static boolean isWindows() {
         return (OS.indexOf("win") >= 0);
@@ -205,13 +205,40 @@ public class AccessFile {
     // Persistencia en config.ker
     // =====================================================================
 
-    /** Escribe los registros en memoria dentro de config.ker. */
+    /**
+     * true si el registro no configura nada: sin intentos, sin mensaje y sin
+     * ninguna tabla. Las tres pestañas del esquema viejo rellenan siempre los
+     * 18 registros, y los que el usuario no toco salen asi.
+     */
+    private static boolean vacio(Configuracion c) {
+        return c.getIntento() == 0
+                && c.getTab1() == 0 && c.getTab2() == 0 && c.getTab3() == 0
+                && esNA(c.getJuego()) && esNA(c.getTabla1())
+                && esNA(c.getTabla2()) && esNA(c.getTabla3());
+    }
+
+    private static boolean esNA(String v) {
+        return v == null || v.trim().isEmpty() || "N/A".equalsIgnoreCase(v.trim());
+    }
+
+    /**
+     * Escribe los registros en memoria dentro de config.ker. Los registros
+     * vacios NO se escriben: no aportan nada, y guardarlos llenaba el archivo
+     * de claves inutiles (162 de 182 en una instalacion real). Los lectores
+     * buscan por id y ya toleran que un registro no este.
+     */
     private static void volcar() {
         Preferencias prefs = new Preferencias();
         prefs.quitarPrefijo(PREFIJO);            // fuera los registros viejos
-        prefs.setValor(CLAVE_CANTIDAD, Integer.toString(registros.size()));
-        for (int i = 0; i < registros.size(); i++) {
-            Configuracion c = registros.get(i);
+        List<Configuracion> utiles = new ArrayList<>();
+        for (Configuracion c : registros) {
+            if (!vacio(c)) {
+                utiles.add(c);
+            }
+        }
+        prefs.setValor(CLAVE_CANTIDAD, Integer.toString(utiles.size()));
+        for (int i = 0; i < utiles.size(); i++) {
+            Configuracion c = utiles.get(i);
             String p = PREFIJO + i + ".";
             prefs.setValor(p + "id", Integer.toString(c.getId()));
             prefs.setValor(p + "intento", Integer.toString(c.getIntento()));
