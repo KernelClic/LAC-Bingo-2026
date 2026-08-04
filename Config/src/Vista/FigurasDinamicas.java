@@ -171,6 +171,10 @@ public class FigurasDinamicas extends JPanel {
         // Configurar aqui manda: la partida pasa a jugarse con estas figuras,
         // aunque las tablas se hubieran generado con numeros de excepcion.
         prefs.setModoPartida(Preferencias.MODO_FIGURAS);
+        // La partida del esquema viejo queda inalcanzable en cuanto hay figuras
+        // configuradas, asi que se va del archivo en vez de quedar de lastre.
+        prefs.purgarPartidaVieja();
+        prefs.normalizarModulos();
         int conAmaño = 0;
         for (int i = 0; i < modelo.getRowCount(); i++) {
             String nombre = texto(modelo.getValueAt(i, COL_FIGURA));
@@ -209,6 +213,8 @@ public class FigurasDinamicas extends JPanel {
         }
         prefs.limpiarFiguras();
         prefs.setModoPartida(Preferencias.MODO_FIGURAS);
+        prefs.purgarPartidaVieja();
+        prefs.normalizarModulos();
         prefs.guardar();
         llenar();
         estado.setText("Amaño retirado de todas las figuras");
