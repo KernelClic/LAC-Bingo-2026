@@ -968,16 +968,14 @@ t.setCodigo(result.getString("codigo"));
      * las tablas pre-fijadas hace que el premio sea indistinguible de una
      * victoria normal.</p>
      *
-     * <p>Excepcion para las figuras que ocupan el CARTON ENTERO (el Pleno):
-     * ahi se descuenta del requisito la letra de la casilla que falta. Sin ese
-     * descuento el Pleno casi nunca premiaba, porque un carton al que le falta
-     * una casilla deja su letra en 4 de las 5 exigidas y solo se destrababa si
-     * aparecia otra balota de esa misma letra.</p>
-     *
-     * <p>El descuento NO se aplica a las figuras cortas, y es a proposito: en
-     * Cuatro Esquinas (B&gt;=2, O&gt;=2) permitiria premiar con 3 balotas
-     * cantadas, y ahi el tablero delata que nadie pudo haber completado la
-     * figura, que es justo lo que esta regla evita.</p>
+     * <p>El requisito va COMPLETO, sin excepciones ni descuentos: en el Pleno
+     * significa B&gt;=5, I&gt;=5, N&gt;=4, G&gt;=5 y O&gt;=5. Un carton al que
+     * le falta una casilla deja la letra de esa casilla en 4, asi que el premio
+     * espera a que aparezca otra balota de esa misma letra —lo que en una
+     * partida real ocurre solo, con los numeros de los demas cartones—. Se
+     * probo a descontar la casilla faltante y se descarto: el premio salia
+     * cuando el tablero todavia no permitia que nadie completara la figura, que
+     * es justo lo que esta regla evita.</p>
      */
     private static int[] requisitoPorLetra(List<Integer> posiciones) {
         int[] necesita = new int[5];
@@ -1009,22 +1007,9 @@ t.setCodigo(result.getString("codigo"));
         return hay;
     }
 
-    /** true si la figura cubre el carton entero (5,5,4,5,5): el Pleno. */
-    private static boolean figuraCompleta(int[] necesita) {
-        return necesita[0] == 5 && necesita[1] == 5 && necesita[2] == 4
-                && necesita[3] == 5 && necesita[4] == 5;
-    }
-
-    /**
-     * @param letraDescuento letra de la casilla que le falta al carton (0..4),
-     *   o -1 si no aplica. Solo se descuenta en figuras que cubren todo el
-     *   carton; en las demas el requisito va completo.
-     */
-    private static boolean tableroPermiteFigura(int[] hay, int[] necesita, int letraDescuento) {
-        boolean descontar = figuraCompleta(necesita);
+    private static boolean tableroPermiteFigura(int[] hay, int[] necesita) {
         for (int col = 0; col < 5; col++) {
-            int exige = necesita[col] - ((descontar && col == letraDescuento) ? 1 : 0);
-            if (hay[col] < exige) {
+            if (hay[col] < necesita[col]) {
                 return false;
             }
         }
@@ -1070,12 +1055,6 @@ t.setCodigo(result.getString("codigo"));
         if (buscado == null || posiciones == null || posiciones.isEmpty()) {
             return vtablasWin;
         }
-        // Las pre-fijadas se anuncian UNA sola vez por verificacion. Sin esto,
-        // cada carton que califica volvia a anunciarlas: en figuras cortas
-        // (Pinos son 4 casillas) varios quedan a una a la vez y la ventana de
-        // ganadores mostraba la misma tabla repetida.
-        boolean completaAnunciada = false;
-        boolean faltaAnunciada = false;
         // Conjunto de numeros cantados (sin el centinela "-1" del indice 0).
         java.util.HashSet<String> cantados = new java.util.HashSet<>();
         for (int c = 1; c < buscado.size(); c++) {
@@ -1086,6 +1065,11 @@ t.setCodigo(result.getString("codigo"));
         // try-with-resources: cierra statement y resultset (evita fuga JDBC -> OOM).
         try (PreparedStatement st = connect.prepareStatement("select * from Tablas");
              ResultSet result = st.executeQuery()) {
+            // Una sola pasada por la base, recogiendo por separado lo de cada
+            // modalidad; el anuncio se arma despues, en orden.
+            int tablaFalta1 = -1;                       // primer carton a UNA casilla
+            int tablaCompleta = -1;                     // primer carton que completo
+            java.util.List<Ganador> reales = new ArrayList<>();
             while (result.next()) {
                 t.setNumTabla(result.getInt("numTabla"));
                 int bingo[] = this.getVectorBingo(result);
@@ -1093,39 +1077,45 @@ t.setCodigo(result.getString("codigo"));
                 // Gana si CADA celda del patron esta cubierta: cantada, o es la
                 // casilla central libre (valor -1, que siempre cuenta como marcada).
                 int faltan = 0;
-                int posFaltante = -1;
                 for (Integer posicion : posiciones) {
                     if (posicion == null || posicion < 0 || posicion > 24) continue;
                     int val = bingo[posicion];
                     if (val == -1) continue;                 // centro libre
-                    if (!cantados.contains(Integer.toString(val))) {
-                        faltan++;
-                        posFaltante = posicion;              // para descontar su letra
-                    }
+                    if (!cantados.contains(Integer.toString(val))) faltan++;
                 }
                 if (faltan == 0) {
-                    vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, t.getCodigo()));
-                    if (!completaAnunciada && completa != null) {
-                        for (String c : completa) {
-                            if (esTablaPrefijada(c)) {
-                                vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, c));
-                            }
-                        }
-                        completaAnunciada = true;
+                    reales.add(new Ganador(t.getNumTabla(), nombre, t.getCodigo()));
+                    if (tablaCompleta < 0) {
+                        tablaCompleta = t.getNumTabla();
                     }
-                } else if (faltan == 1 && !faltaAnunciada
-                        && tableroPermiteFigura(hayPorLetra, necesita, posFaltante / 5)) {
-                    // Partida programada: al faltar UNA casilla, entran las pre-fijadas.
-                    boolean alguna = false;
-                    if (esTablaPrefijada(t10)) {
-                        vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, t10));
-                        alguna = true;
+                } else if (faltan == 1 && tablaFalta1 < 0
+                        && tableroPermiteFigura(hayPorLetra, necesita)) {
+                    tablaFalta1 = t.getNumTabla();
+                }
+            }
+
+            // 1) PRIMERO "falta 1": hasta 2 tablas pre-fijadas. Se anuncian una
+            //    sola vez, aunque varios cartones queden a una casilla a la vez
+            //    (en figuras cortas pasa seguido y salia la misma tabla repetida).
+            if (tablaFalta1 >= 0) {
+                if (esTablaPrefijada(t10)) {
+                    vtablasWin.addElement(new Ganador(tablaFalta1, nombre, t10));
+                }
+                if (esTablaPrefijada(t11)) {
+                    vtablasWin.addElement(new Ganador(tablaFalta1, nombre, t11));
+                }
+            }
+
+            // 2) DESPUES los ganadores reales y, si esta configurada, las hasta
+            //    3 tablas de "al completar".
+            for (Ganador g : reales) {
+                vtablasWin.addElement(g);
+            }
+            if (tablaCompleta >= 0 && completa != null) {
+                for (String c : completa) {
+                    if (esTablaPrefijada(c)) {
+                        vtablasWin.addElement(new Ganador(tablaCompleta, nombre, c));
                     }
-                    if (esTablaPrefijada(t11)) {
-                        vtablasWin.addElement(new Ganador(t.getNumTabla(), nombre, t11));
-                        alguna = true;
-                    }
-                    faltaAnunciada = alguna;
                 }
             }
         }
